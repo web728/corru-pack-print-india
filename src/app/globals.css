@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+/* ========== DESIGN TOKENS ========== */
+
+:root {
+  /* Brand */
+  --navy: #0A1628;
+  --navy-mid: #1A2D4A;
+  --navy-light: #0F2847;
+  --red: #C41E3A;
+  --red-hover: #A31830;
+  --burgundy: #7A1024;
+
+  /* Surfaces */
+  --surface-primary: #FFFFFF;
+  --surface-secondary: #F5F3EF;
+  --surface-elevated: #FFFFFF;
+  --surface-nav: #0A1628;
+  --surface-footer: #0A1628;
+
+  /* Text */
+  --text-primary: #0A1628;
+  --text-secondary: #4A4A4A;
+  --text-muted: #6B7280;
+  --text-on-dark: #FFFFFF;
+  --text-on-accent: #FFFFFF;
+
+  /* Accent */
+  --accent: #C41E3A;
+  --accent-hover: #A31830;
+  --accent-subtle: rgba(196, 30, 58, 0.08);
+
+  /* Borders */
+  --border: #E2E0DC;
+  --border-hover: #C8C5BF;
+  --border-focus: #C41E3A;
+
+  /* Functional */
+  --success: #15803D;
+  --success-bg: #F0FDF4;
+  --warning: #B45309;
+  --warning-bg: #FFFBEB;
+  --error: #DC2626;
+  --error-bg: #FEF2F2;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.05);
+  --shadow-xl: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Layout */
+  --nav-height: 4rem;
+  --max-width: 80rem;
+}
+
+/* ========== DARK MODE ========== */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface-primary: #111827;
+    --surface-secondary: #0D1B2A;
+    --surface-elevated: #1A2332;
+    --surface-nav: #0A1628;
+    --surface-footer: #060D16;
+    --text-primary: #F0EDE8;
+    --text-secondary: #9CA3AF;
+    --text-muted: #6B7280;
+    --accent: #E63950;
+    --accent-hover: #C41E3A;
+    --accent-subtle: rgba(230, 57, 80, 0.12);
+    --border: #2D3748;
+    --border-hover: #4A5568;
+    --border-focus: #E63950;
+    --success: #22C55E;
+    --success-bg: #052E16;
+    --warning: #F59E0B;
+    --warning-bg: #451A03;
+    --error: #EF4444;
+    --error-bg: #450A0A;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+    --shadow-md: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.15);
+    --shadow-lg: 0 4px 6px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.2);
+    --shadow-xl: 0 10px 15px rgba(0,0,0,0.4), 0 4px 6px rgba(0,0,0,0.2);
+  }
+}
+
+:root[data-theme="dark"] {
+  --surface-primary: #111827;
+  --surface-secondary: #0D1B2A;
+  --surface-elevated: #1A2332;
+  --surface-nav: #0A1628;
+  --surface-footer: #060D16;
+  --text-primary: #F0EDE8;
+  --text-secondary: #9CA3AF;
+  --text-muted: #6B7280;
+  --accent: #E63950;
+  --accent-hover: #C41E3A;
+  --accent-subtle: rgba(230, 57, 80, 0.12);
+  --border: #2D3748;
+  --border-hover: #4A5568;
+  --border-focus: #E63950;
+  --success: #22C55E;
+  --success-bg: #052E16;
+  --warning: #F59E0B;
+  --warning-bg: #451A03;
+  --error: #EF4444;
+  --error-bg: #450A0A;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.15);
+  --shadow-lg: 0 4px 6px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.2);
+  --shadow-xl: 0 10px 15px rgba(0,0,0,0.4), 0 4px 6px rgba(0,0,0,0.2);
+}
+
+:root[data-theme="light"] {
+  --surface-primary: #FFFFFF;
+  --surface-secondary: #F5F3EF;
+  --surface-elevated: #FFFFFF;
+  --text-primary: #0A1628;
+  --text-secondary: #4A4A4A;
+  --accent: #C41E3A;
+  --accent-hover: #A31830;
+  --border: #E2E0DC;
+  --border-focus: #C41E3A;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+  }
+}
+
+/* ========== TAILWIND v4 THEME ========== */
+
+@theme inline {
+  --color-navy: var(--navy);
+  --color-navy-mid: var(--navy-mid);
+  --color-navy-light: var(--navy-light);
+  --color-red: var(--red);
+  --color-red-hover: var(--red-hover);
+  --color-burgundy: var(--burgundy);
+
+  --color-surface-primary: var(--surface-primary);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-nav: var(--surface-nav);
+  --color-surface-footer: var(--surface-footer);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-on-dark: var(--text-on-dark);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-subtle: var(--accent-subtle);
+
+  --color-border: var(--border);
+  --color-border-focus: var(--border-focus);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ========== BASE STYLES ========== */
+
+body {
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Skip nav */
+.skip-nav {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-nav:focus {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  padding: 1rem 1.5rem;
+  background: var(--navy);
+  color: white;
+  z-index: 9999;
+  font-weight: 600;
+}
+
+/* Corrugated flute texture — CSS-generated */
+.flute-pattern {
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 8px,
+    rgba(10, 22, 40, 0.03) 8px,
+    rgba(10, 22, 40, 0.03) 10px
+  );
+}
+
+.flute-pattern-dark {
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 8px,
+    rgba(255, 255, 255, 0.03) 8px,
+    rgba(255, 255, 255, 0.03) 10px
+  );
+}
+
+/* Heading balance */
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+/* Tabular numbers for data */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
