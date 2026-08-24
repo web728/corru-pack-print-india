@@ -226,38 +226,7 @@ export function SiteFooter() {
             </div>
           ))}
 
-          {/* Codemap Section */}
-          <div className="col-span-2 md:col-span-2 lg:col-span-1">
-            <h3 className="font-semibold text-xs uppercase tracking-wider text-slate-200 mb-4 border-l-2 border-red-600 pl-2.5 flex items-center gap-1.5">
-              <Code2 className="w-3.5 h-3.5 text-red-500" />
-              Codemap
-            </h3>
-            
-            <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-3 space-y-2 shadow-inner backdrop-blur-sm">
-              <div className="flex items-center justify-between text-[11px] text-slate-400 pb-1.5 border-b border-slate-800/80">
-                <span className="flex items-center gap-1.5 text-emerald-400 font-medium">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  Active Node
-                </span>
-                <span className="font-mono text-[10px] text-slate-500">v2.4</span>
-              </div>
-              
-              <div className="space-y-1 font-mono text-xs">
-                {QUICK_CODEMAP.map((item) => (
-                  <Link
-                    key={item.path}
-                    href={item.path}
-                    className="flex items-center justify-between text-slate-400 hover:text-red-400 transition-colors py-1 px-1.5 rounded hover:bg-slate-800/60 group"
-                  >
-                    <span className="truncate max-w-[90px] text-[11px] group-hover:translate-x-0.5 transition-transform">{item.path}</span>
-                    <span className="text-[9px] text-slate-400 bg-slate-800/90 px-1.5 py-0.5 rounded border border-slate-700/60 group-hover:border-red-500/50">
-                      #{item.tag}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
+       
 
         </div>
 

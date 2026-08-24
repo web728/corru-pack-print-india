@@ -1,6 +1,5 @@
 "use client";
 
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, Variants } from "framer-motion";
@@ -8,7 +7,6 @@ import { ArrowRight, Building2, Globe, Sparkles, CheckCircle2, Award, Target, Ex
 import { PageHero } from "@/components/layout/page-hero";
 import { EVENT } from "@/config/event";
 
-// TypeScript Typed Minimal Animation Variants
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { 
@@ -33,14 +31,15 @@ export default function OrganizersPage() {
 
   const icpmaName = icpmaObj.fullName || icpmaObj.name || "Indian Corrugated Paper & Packaging Machinery Manufacturers Association";
   const icpmaShort = icpmaObj.shortName || "ICPMA";
-  
+  const icpmaWebsite = icpmaObj.website || "https://icpma.org.in/"; // <-- Dynamic ya fallback URL
+
   const futurexName = futurexObj.fullName || futurexObj.name || "Futurex Trade Fair & Events Pvt. Ltd.";
   const futurexShort = futurexObj.shortName || "Futurex";
   const futurexTagline = futurexObj.tagline || "Behind The Success";
+  const futurexWebsite = futurexObj.website || "https://www.futurextrade.com/"; // <-- Dynamic ya fallback URL
 
   return (
     <div className="bg-[#0b1329] text-white min-h-screen">
-      {/* Hero Section */}
       <PageHero
         title="Jointly Organized By Industry Leaders"
         subtitle={`${EVENT.fullName} brings together the visionary leadership of ${icpmaShort} and the exhibition management expertise of ${futurexShort}.`}
@@ -48,7 +47,6 @@ export default function OrganizersPage() {
         backgroundImage="/images/about/conference-address.jpg"
       />
 
-      {/* Intro Banner */}
       <section className="relative py-12 bg-[#070d1d] border-b border-slate-800">
         <motion.div 
           initial="hidden"
@@ -80,17 +78,27 @@ export default function OrganizersPage() {
             className="grid lg:grid-cols-5 gap-12 lg:gap-16 items-start"
           >
             <div className="lg:col-span-3">
-              {/* Header with Logo */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-5 mb-8 pb-6 border-b border-slate-800">
-                <div className="w-46 h-40 rounded-2xl bg-[#111c38] border border-slate-700/80 p-3 flex items-center justify-center shrink-0 shadow-lg relative">
+                
+                {/* ICPMA Logo Link with Hover Scale */}
+                <Link 
+                  href={icpmaWebsite} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-46 h-40 rounded-2xl bg-[#111c38] border border-slate-700/80 hover:border-red-500/50 p-3 flex items-center justify-center shrink-0 shadow-lg relative group transition-all duration-300 hover:scale-105"
+                >
                   <Image
                     src="/logo/icpma.png"
                     alt={`${icpmaShort} Logo`}
                     width={144}
                     height={144}
-                    className="object-contain"
+                    className="object-contain transition-transform duration-300 group-hover:scale-105"
                   />
-                </div>
+                  <span className="absolute bottom-2 right-2 p-1 rounded-md bg-slate-900/80 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </span>
+                </Link>
+
                 <div>
                   <span className="text-xs font-semibold uppercase tracking-wider text-red-400 bg-red-500/10 px-2.5 py-1 rounded-md border border-red-500/20">
                     Industry Apex Association
@@ -185,17 +193,27 @@ export default function OrganizersPage() {
             className="grid lg:grid-cols-5 gap-12 lg:gap-16 items-start"
           >
             <div className="lg:col-span-3">
-              {/* Header with Logo */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-5 mb-8 pb-6 border-b border-slate-800">
-                <div className="w-46 h-38 rounded-2xl bg-[#111c38] border border-slate-700/80 p-3 flex items-center justify-center shrink-0 shadow-lg relative">
+                
+                {/* Futurex Logo Link with Hover Scale */}
+                <Link 
+                  href={futurexWebsite} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-46 h-38 rounded-2xl bg-[#111c38] border border-slate-700/80 hover:border-blue-500/50 p-3 flex items-center justify-center shrink-0 shadow-lg relative group transition-all duration-300 hover:scale-105"
+                >
                   <Image
                     src="/logo/futurex-trade-fair-events-logo.png"
                     alt={`${futurexShort} Logo`}
                     width={154}
                     height={154}
-                    className="object-contain"
+                    className="object-contain transition-transform duration-300 group-hover:scale-105"
                   />
-                </div>
+                  <span className="absolute bottom-2 right-2 p-1 rounded-md bg-slate-900/80 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </span>
+                </Link>
+
                 <div>
                   <span className="text-xs font-semibold uppercase tracking-wider text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded-md border border-blue-500/20">
                     Trade Fair &amp; Event Management
@@ -306,7 +324,7 @@ export default function OrganizersPage() {
             </div>
           </div>
         </motion.div>
-      </section>``
+      </section>
     </div>
   );
-}                                                                                                                 
+}
