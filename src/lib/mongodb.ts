@@ -1,6 +1,6 @@
 /**
  * MongoDB connection using the native driver.
- * Singleton pattern with connection pooling.
+ * Singleton pattern with global caching for Next.js Serverless & Dev environments.
  * Server-only module — do not import from client components.
  */
 
@@ -8,45 +8,45 @@ import { MongoClient, Db, Collection, Document } from "mongodb";
 import { getConfig } from "@/lib/env";
 
 // ---------------------------------------------------------------------------
-// Singleton
+// Global Connection Caching (Prevents connection leaks in Dev HMR & Serverless)
 // ---------------------------------------------------------------------------
 
-let _client: MongoClient | null = null;
-let _db: Db | null = null;
-let _connectionPromise: Promise<MongoClient> | null = null;
+declare global {
+  // eslint-disable-next-line no-var
+  var _mongoClientPromise: Promise<MongoClient> | undefined;
+  // eslint-disable-next-line no-var
+  var _mongoDbInstance: Db | undefined;
+}
 
 async function connect(): Promise<MongoClient> {
-  if (_client) return _client;
+  if (global._mongoClientPromise) {
+    return global._mongoClientPromise;
+  }
 
-  // Reuse the in-flight connection promise to avoid multiple simultaneous connects
-  if (_connectionPromise) return _connectionPromise;
+  const config = getConfig();
 
-  _connectionPromise = (async () => {
-    const config = getConfig();
+  const client = new MongoClient(config.MONGODB_URI, {
+    maxPoolSize: 10,
+    minPoolSize: 1,
+    maxIdleTimeMS: 30_000,
+    connectTimeoutMS: 10_000,
+    serverSelectionTimeoutMS: 10_000,
+  });
 
-    const client = new MongoClient(config.MONGODB_URI, {
-      // Connection pool defaults are sensible for a serverless-friendly setup
-      maxPoolSize: 10,
-      minPoolSize: 1,
-      maxIdleTimeMS: 30_000,
-      connectTimeoutMS: 10_000,
-      serverSelectionTimeoutMS: 10_000,
-    });
-
-    try {
-      await client.connect();
-      _client = client;
-      _db = client.db(config.MONGODB_DATABASE);
+  global._mongoClientPromise = client
+    .connect()
+    .then((c) => {
+      global._mongoDbInstance = c.db(config.MONGODB_DATABASE);
       console.info("[mongodb] Connected to", config.MONGODB_DATABASE);
-      return client;
-    } catch (error) {
-      _connectionPromise = null;
+      return c;
+    })
+    .catch((error) => {
+      global._mongoClientPromise = undefined;
       console.error("[mongodb] Connection failed:", error instanceof Error ? error.message : error);
       throw error;
-    }
-  })();
+    });
 
-  return _connectionPromise;
+  return global._mongoClientPromise;
 }
 
 // ---------------------------------------------------------------------------
@@ -55,10 +55,14 @@ async function connect(): Promise<MongoClient> {
 
 /** Get the database instance, connecting on first call. */
 export async function getDb(): Promise<Db> {
-  if (_db) return _db;
+  if (global._mongoDbInstance) {
+    return global._mongoDbInstance;
+  }
   await connect();
-  if (!_db) throw new Error("[mongodb] Database not initialised after connect");
-  return _db;
+  if (!global._mongoDbInstance) {
+    throw new Error("[mongodb] Database not initialised after connect");
+  }
+  return global._mongoDbInstance;
 }
 
 /** Shorthand: get a typed collection by name. */

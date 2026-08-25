@@ -2,10 +2,15 @@
 
 import { useState, useCallback } from "react";
 
-interface SubmitResult {
+export interface SubmitResult {
   success: boolean;
   referenceNumber?: string;
   error?: string;
+  integrations?: {
+    sheets: string;
+    adminEmail: string;
+    confirmationEmail: string;
+  };
 }
 
 interface UseFormSubmitOptions {
@@ -28,7 +33,23 @@ export function useFormSubmit({ endpoint }: UseFormSubmitOptions) {
           body: JSON.stringify(data),
         });
 
-        const json = (await response.json()) as SubmitResult;
+        // Safe JSON parsing for non-200 responses
+        let json: SubmitResult;
+        try {
+          json = (await response.json()) as SubmitResult;
+        } catch {
+          json = {
+            success: false,
+            error: response.statusText || "Server responded with an unknown error.",
+          };
+        }
+
+        // Handle case where HTTP status is 4xx/5xx but json didn't contain explicit error
+        if (!response.ok && json.success) {
+          json.success = false;
+          json.error = json.error || `Request failed with status ${response.status}`;
+        }
+
         setResult(json);
         return json;
       } catch {

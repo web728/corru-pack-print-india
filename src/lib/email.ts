@@ -1,15 +1,15 @@
 /**
- * Email integration using Resend.
+ * Email integration using Nodemailer (Gmail / SMTP App Password).
  *
  * Sends confirmation emails to registrants and admin notification emails.
- * Handles missing API key gracefully (returns disabled status).
+ * Handles missing credentials gracefully (returns disabled status).
  *
  * Server-only module — do not import from client components.
  */
 
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import { EVENT, type FormType } from "@/config/event";
-import { isIntegrationEnabled, getConfig } from "@/lib/env";
+import { isIntegrationEnabled, getConfig, getOptionalEnv } from "@/lib/env";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -40,17 +40,31 @@ export interface AdminNotificationData {
 }
 
 // ---------------------------------------------------------------------------
-// Internals
+// Internals (SMTP Transporter setup with App Password)
 // ---------------------------------------------------------------------------
 
-let _resend: Resend | null = null;
+let _transporter: nodemailer.Transporter | null = null;
 
-function getResendClient(): Resend | null {
-  if (_resend) return _resend;
-  const config = getConfig();
-  if (!config.RESEND_API_KEY) return null;
-  _resend = new Resend(config.RESEND_API_KEY);
-  return _resend;
+function getTransporter(): nodemailer.Transporter | null {
+  if (_transporter) return _transporter;
+
+  const smtpEmail = getOptionalEnv("SMTP_USER") || getOptionalEnv("EMAIL_FROM");
+  const smtpPass = getOptionalEnv("SMTP_PASS") || getOptionalEnv("EMAIL_APP_PASSWORD");
+
+  if (!smtpEmail || !smtpPass) {
+    console.warn("[email] SMTP credentials missing in environment variables.");
+    return null;
+  }
+
+  _transporter = nodemailer.createTransport({
+    service: "gmail", // Ya custom SMTP setup (host/port)
+    auth: {
+      user: smtpEmail,
+      pass: smtpPass, // 16-character App Password
+    },
+  });
+
+  return _transporter;
 }
 
 const FORM_TYPE_LABELS: Record<FormType, string> = {
@@ -69,7 +83,7 @@ function formTypeLabel(type: FormType): string {
 }
 
 // ---------------------------------------------------------------------------
-// HTML helpers
+// HTML & Text Helpers
 // ---------------------------------------------------------------------------
 
 function confirmationHtml(data: ConfirmationTemplateData): string {
@@ -188,34 +202,30 @@ export function isEmailEnabled(): boolean {
  */
 export async function sendConfirmationEmail(
   to: string,
-  templateData: ConfirmationTemplateData,
+  templateData: ConfirmationTemplateData
 ): Promise<EmailResult> {
   if (!isEmailEnabled()) {
     return { success: false, status: "disabled", errorMessage: "Email not configured" };
   }
 
-  const client = getResendClient();
-  if (!client) {
-    return { success: false, status: "error", errorMessage: "Failed to initialise email client" };
+  const transporter = getTransporter();
+  if (!transporter) {
+    return { success: false, status: "error", errorMessage: "Failed to initialise SMTP transporter" };
   }
 
   const config = getConfig();
   const subject = `${templateData.referenceNumber} — ${formTypeLabel(templateData.formType)} Confirmation | ${EVENT.name}`;
 
   try {
-    const { data, error } = await client.emails.send({
+    const info = await transporter.sendMail({
       from: config.EMAIL_FROM,
-      to: [to],
+      to,
       subject,
       html: confirmationHtml(templateData),
       text: confirmationText(templateData),
     });
 
-    if (error) {
-      return { success: false, status: "error", errorMessage: error.message };
-    }
-
-    return { success: true, status: "sent", messageId: data?.id };
+    return { success: true, status: "sent", messageId: info.messageId };
   } catch (error) {
     return {
       success: false,
@@ -230,39 +240,35 @@ export async function sendConfirmationEmail(
  */
 export async function sendAdminNotification(
   formType: FormType,
-  submissionData: AdminNotificationData,
+  submissionData: AdminNotificationData
 ): Promise<EmailResult> {
   if (!isEmailEnabled()) {
     return { success: false, status: "disabled", errorMessage: "Email not configured" };
   }
 
-  const client = getResendClient();
-  if (!client) {
-    return { success: false, status: "error", errorMessage: "Failed to initialise email client" };
+  const transporter = getTransporter();
+  if (!transporter) {
+    return { success: false, status: "error", errorMessage: "Failed to initialise SMTP transporter" };
   }
 
   const config = getConfig();
 
-  if (config.EMAIL_ADMIN_RECIPIENTS.length === 0) {
+  if (!config.EMAIL_ADMIN_RECIPIENTS || config.EMAIL_ADMIN_RECIPIENTS.length === 0) {
     return { success: false, status: "disabled", errorMessage: "No admin recipients configured" };
   }
 
   const subject = `[${submissionData.referenceNumber}] New ${formTypeLabel(formType)} | ${EVENT.name}`;
 
   try {
-    const { data, error } = await client.emails.send({
+    const info = await transporter.sendMail({
       from: config.EMAIL_FROM,
-      to: config.EMAIL_ADMIN_RECIPIENTS,
+      to: config.EMAIL_ADMIN_RECIPIENTS.join(", "), // Nodemailer multiple emails ko string me support karta hai
       subject,
       html: adminHtml(submissionData),
       text: adminText(submissionData),
     });
 
-    if (error) {
-      return { success: false, status: "error", errorMessage: error.message };
-    }
-
-    return { success: true, status: "sent", messageId: data?.id };
+    return { success: true, status: "sent", messageId: info.messageId };
   } catch (error) {
     return {
       success: false,

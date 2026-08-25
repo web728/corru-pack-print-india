@@ -1,65 +1,46 @@
 /**
- * Configurable bot protection verification.
- *
- * When BOT_PROTECTION_SECRET is set, verifies tokens server-side via
- * a generic verification endpoint (compatible with hCaptcha, Turnstile,
- * reCAPTCHA, etc.).
- *
- * When not set:
- *   - Development: verification is skipped (allows local testing).
- *   - Production: fails closed — all requests are rejected.
+ * Google reCAPTCHA v2 & Generic Bot Protection Verification.
  *
  * Server-only module — do not import from client components.
  */
 
 import { isProduction, isIntegrationEnabled, getOptionalEnv } from "@/lib/env";
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export interface BotProtectionResult {
   verified: boolean;
   reason?: string;
 }
 
-// ---------------------------------------------------------------------------
-// Config
-// ---------------------------------------------------------------------------
+/** Default to Google reCAPTCHA v2 Verification Endpoint */
+const DEFAULT_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
 
 /**
- * Override this with the provider's siteverify URL. Defaults to hCaptcha.
- * Set BOT_PROTECTION_VERIFY_URL in env to switch providers.
- */
-const DEFAULT_VERIFY_URL = "https://api.hcaptcha.com/siteverify";
-
-// ---------------------------------------------------------------------------
-// Public API
-// ---------------------------------------------------------------------------
-
-/**
- * Verify a bot-protection token.
+ * Verify reCAPTCHA token server-side with Google.
  *
- * @param token The challenge response token from the client-side widget.
+ * @param token Client-side widget se mila token
  */
 export async function verifyBotProtection(
   token: string | null,
 ): Promise<BotProtectionResult> {
-  // Integration not configured
+  // Integration disabled check
   if (!isIntegrationEnabled("bot-protection")) {
     if (isProduction()) {
       return { verified: false, reason: "Bot protection not configured in production" };
     }
-    // Development: skip verification
+    // Development mode skip
     return { verified: true, reason: "Bot protection disabled (development)" };
   }
 
-  // Token missing
+  // Check missing token
   if (!token || token.trim().length === 0) {
-    return { verified: false, reason: "Missing bot protection token" };
+    return { verified: false, reason: "Please complete the reCAPTCHA challenge." };
   }
 
   const secret = getOptionalEnv("BOT_PROTECTION_SECRET");
+  if (!secret) {
+    return { verified: false, reason: "reCAPTCHA Secret Key missing in environment variables" };
+  }
+
   const verifyUrl = getOptionalEnv("BOT_PROTECTION_VERIFY_URL", DEFAULT_VERIFY_URL);
 
   try {
@@ -75,18 +56,21 @@ export async function verifyBotProtection(
     if (!response.ok) {
       return {
         verified: false,
-        reason: `Verification endpoint returned ${response.status}`,
+        reason: `reCAPTCHA endpoint error: ${response.status}`,
       };
     }
 
-    const data = (await response.json()) as { success?: boolean; "error-codes"?: string[] };
+    const data = (await response.json()) as { 
+      success?: boolean; 
+      "error-codes"?: string[];
+    };
 
     if (data.success) {
       return { verified: true };
     }
 
-    const errorCodes = data["error-codes"]?.join(", ") ?? "unknown";
-    return { verified: false, reason: `Verification failed: ${errorCodes}` };
+    const errorCodes = data["error-codes"]?.join(", ") ?? "invalid-input-response";
+    return { verified: false, reason: `reCAPTCHA verification failed: ${errorCodes}` };
   } catch (error) {
     return {
       verified: false,

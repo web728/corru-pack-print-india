@@ -1,13 +1,28 @@
-import type { Metadata } from "next";
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { motion, Variants } from "framer-motion";
 import { ArrowRight, Train, Plane, Car, Clock, MapPin, Navigation, Building, ShieldCheck, ExternalLink, Sparkles } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { EVENT } from "@/config/event";
 
-export const metadata: Metadata = {
-  title: `Venue — ${EVENT.venue.name}, ${EVENT.venue.city}`,
-  description: `${EVENT.fullName} ${EVENT.year} takes place at ${EVENT.venue.fullDisplay}. Find directions, transport, and venue details.`,
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } 
+  }
+};
+
+const staggerContainer: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12
+    }
+  }
 };
 
 export default function VenuePage() {
@@ -18,7 +33,7 @@ export default function VenuePage() {
   return (
     <div className="bg-[#0b1329] text-white min-h-screen relative overflow-hidden">
       
-      {/* Dynamic Background SVG Overlay (Red & Blue Wave Grid Pattern) */}
+      {/* Dynamic Background SVG Overlay */}
       <div className="absolute inset-0 pointer-events-none opacity-20 z-0 overflow-hidden">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none">
           <defs>
@@ -35,7 +50,6 @@ export default function VenuePage() {
             </linearGradient>
           </defs>
           <rect width="100%" height="100%" fill="url(#venue-grid)" />
-          {/* Animated/Glowing SVG Curves */}
           <path d="M-100,200 C300,600 800,-100 1500,400" stroke="url(#redGradient)" strokeWidth="2.5" strokeDasharray="8 6" />
           <path d="M-50,600 C400,200 900,900 1600,100" stroke="url(#blueGradient)" strokeWidth="2" strokeDasharray="6 6" />
         </svg>
@@ -51,15 +65,19 @@ export default function VenuePage() {
 
       {/* Overview Section */}
       <section className="relative py-20 lg:py-24 bg-[#0b1329] overflow-hidden">
-        {/* Glowing Ambient SVG Orbs */}
         <div className="absolute top-1/4 left-0 w-[450px] h-[450px] bg-red-600/15 rounded-full blur-[150px] pointer-events-none" />
         <div className="absolute bottom-10 right-0 w-[400px] h-[400px] bg-blue-600/15 rounded-full blur-[150px] pointer-events-none" />
 
         <div className="max-w-[var(--max-width)] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             
-            {/* Left Column */}
-            <div>
+            {/* Left Column with Scroll Fade Up */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={fadeUp}
+            >
               <span className="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-red-400 bg-red-500/10 border border-red-500/20 rounded-full mb-4">
                 <MapPin className="w-3.5 h-3.5 text-red-400" />
                 Official Venue
@@ -82,7 +100,11 @@ export default function VenuePage() {
               </div>
 
               {/* Snapshot Card */}
-              <div className="mt-8 bg-[#111c38]/70 border border-slate-800/90 rounded-2xl p-6 backdrop-blur-md shadow-xl relative overflow-hidden">
+              <motion.div 
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.2 }}
+                className="mt-8 bg-[#111c38]/70 border border-slate-800/90 rounded-2xl p-6 backdrop-blur-md shadow-xl relative overflow-hidden"
+              >
                 <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-xl pointer-events-none" />
                 <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
                   <Building className="w-5 h-5 text-red-500" />
@@ -107,24 +129,30 @@ export default function VenuePage() {
                     <dd className="text-base font-semibold text-red-400 mt-1">World-Class B2B Halls</dd>
                   </div>
                 </dl>
-              </div>
+              </motion.div>
 
               <div className="mt-8">
                 <a
                   href={mapDirectionsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-600/25 transition-all duration-300"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-600/25 transition-all duration-300 hover:scale-105 active:scale-95"
                 >
                   <Navigation className="w-4 h-4" />
                   Get Google Maps Directions
                   <ExternalLink className="w-4 h-4 opacity-80" />
                 </a>
               </div>
-            </div>
+            </motion.div>
 
             {/* Right Visual Image Frame */}
-            <div className="relative">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="relative"
+            >
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-700/80 group aspect-[4/3] lg:aspect-[4/5]">
                 <Image
                   src="/images/venue/registration-desk.jpg"
@@ -148,7 +176,7 @@ export default function VenuePage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
           </div>
         </div>
@@ -156,7 +184,6 @@ export default function VenuePage() {
 
       {/* Transportation Section */}
       <section className="relative py-20 bg-[#070d1d] border-y border-slate-800">
-        {/* Background Vector Shapes */}
         <div className="absolute inset-0 pointer-events-none">
           <svg className="w-full h-full opacity-10" viewBox="0 0 1440 600" fill="none">
             <circle cx="200" cy="100" r="300" stroke="#ef4444" strokeWidth="2" strokeDasharray="10 10" />
@@ -165,7 +192,13 @@ export default function VenuePage() {
         </div>
 
         <div className="max-w-[var(--max-width)] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-3xl">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={fadeUp}
+            className="max-w-3xl"
+          >
             <span className="inline-flex items-center gap-2 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-red-400 bg-red-500/10 border border-red-500/20 rounded-full">
               <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
               Getting There
@@ -176,12 +209,22 @@ export default function VenuePage() {
             <p className="mt-2 text-slate-400 text-base sm:text-lg">
               Multiple transport options make reaching the exhibition venue convenient for domestic and international delegates.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            
+          {/* Stagger Animated Transport Cards */}
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
+            className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
             {/* By Air */}
-            <div className="bg-[#111c38]/60 hover:bg-[#111c38] rounded-2xl p-6 border border-slate-800 hover:border-red-500/50 transition-all duration-300 backdrop-blur-sm group relative overflow-hidden">
+            <motion.div 
+              variants={fadeUp} 
+              whileHover={{ y: -8 }}
+              className="bg-[#111c38]/60 hover:bg-[#111c38] rounded-2xl p-6 border border-slate-800 hover:border-red-500/50 transition-colors duration-300 backdrop-blur-sm group relative overflow-hidden"
+            >
               <div className="absolute top-0 right-0 w-16 h-16 bg-red-600/5 rounded-bl-full pointer-events-none" />
               <div className="w-12 h-12 rounded-xl bg-red-600/10 border border-red-500/20 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
                 <Plane className="w-6 h-6 text-red-400" />
@@ -190,10 +233,14 @@ export default function VenuePage() {
               <p className="text-sm text-slate-300 leading-relaxed">
                 Indira Gandhi International Airport (DEL) is approx 15 km away from {EVENT.venue.name}, with express cabs and direct metro routes.
               </p>
-            </div>
+            </motion.div>
 
             {/* By Metro */}
-            <div className="bg-[#111c38]/60 hover:bg-[#111c38] rounded-2xl p-6 border border-slate-800 hover:border-blue-500/50 transition-all duration-300 backdrop-blur-sm group relative overflow-hidden">
+            <motion.div 
+              variants={fadeUp} 
+              whileHover={{ y: -8 }}
+              className="bg-[#111c38]/60 hover:bg-[#111c38] rounded-2xl p-6 border border-slate-800 hover:border-blue-500/50 transition-colors duration-300 backdrop-blur-sm group relative overflow-hidden"
+            >
               <div className="absolute top-0 right-0 w-16 h-16 bg-blue-600/5 rounded-bl-full pointer-events-none" />
               <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
                 <Train className="w-6 h-6 text-blue-400" />
@@ -202,10 +249,14 @@ export default function VenuePage() {
               <p className="text-sm text-slate-300 leading-relaxed">
                 Dwarka Sector 25 Metro Station on the Airport Express Line connects directly to the venue gates.
               </p>
-            </div>
+            </motion.div>
 
             {/* By Road */}
-            <div className="bg-[#111c38]/60 hover:bg-[#111c38] rounded-2xl p-6 border border-slate-800 hover:border-red-500/50 transition-all duration-300 backdrop-blur-sm group relative overflow-hidden">
+            <motion.div 
+              variants={fadeUp} 
+              whileHover={{ y: -8 }}
+              className="bg-[#111c38]/60 hover:bg-[#111c38] rounded-2xl p-6 border border-slate-800 hover:border-red-500/50 transition-colors duration-300 backdrop-blur-sm group relative overflow-hidden"
+            >
               <div className="absolute top-0 right-0 w-16 h-16 bg-red-600/5 rounded-bl-full pointer-events-none" />
               <div className="w-12 h-12 rounded-xl bg-red-600/10 border border-red-500/20 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
                 <Car className="w-6 h-6 text-red-400" />
@@ -214,10 +265,14 @@ export default function VenuePage() {
               <p className="text-sm text-slate-300 leading-relaxed">
                 Connected via Dwarka Expressway and NH-48. Dedicated multi-level visitor parking is available on-site.
               </p>
-            </div>
+            </motion.div>
 
             {/* Timings */}
-            <div className="bg-[#111c38]/60 hover:bg-[#111c38] rounded-2xl p-6 border border-slate-800 hover:border-blue-500/50 transition-all duration-300 backdrop-blur-sm group relative overflow-hidden">
+            <motion.div 
+              variants={fadeUp} 
+              whileHover={{ y: -8 }}
+              className="bg-[#111c38]/60 hover:bg-[#111c38] rounded-2xl p-6 border border-slate-800 hover:border-blue-500/50 transition-colors duration-300 backdrop-blur-sm group relative overflow-hidden"
+            >
               <div className="absolute top-0 right-0 w-16 h-16 bg-blue-600/5 rounded-bl-full pointer-events-none" />
               <div className="w-12 h-12 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
                 <Clock className="w-6 h-6 text-blue-400" />
@@ -227,19 +282,24 @@ export default function VenuePage() {
                 Dates: <strong className="text-white">{EVENT.dates.display}</strong>.<br />
                 Daily timings: 10:00 AM – 06:00 PM (Entry badge mandatory).
               </p>
-            </div>
+            </motion.div>
 
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="relative py-20 bg-[#0b1329] overflow-hidden">
-        {/* Glowing Ambient SVG Orbs */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-r from-red-600/10 to-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
 
         <div className="max-w-[var(--max-width)] mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <div className="max-w-2xl mx-auto">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={fadeUp}
+            className="max-w-2xl mx-auto"
+          >
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
               Plan Your Visit Today
             </h2>
@@ -249,18 +309,18 @@ export default function VenuePage() {
 
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/visitors/register" className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-xl shadow-red-600/25 transition-all duration-300">
+                <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-xl shadow-red-600/25 transition-all duration-300 hover:scale-105 active:scale-95">
                   Register as Visitor
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </Link>
               <Link href="/travel" className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#111c38] hover:bg-[#18264b] text-white font-semibold rounded-xl border border-slate-700/80 shadow-md transition-all duration-300">
+                <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#111c38] hover:bg-[#18264b] text-white font-semibold rounded-xl border border-slate-700/80 shadow-md transition-all duration-300 hover:scale-105 active:scale-95">
                   Travel &amp; Accommodation
                 </button>
               </Link>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>

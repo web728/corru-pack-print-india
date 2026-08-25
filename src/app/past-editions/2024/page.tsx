@@ -135,7 +135,7 @@ export default function Edition2024Page() {
             <div className="lg:col-span-5 relative">
               <div className="relative aspect-[3/4] rounded-3xl overflow-hidden border border-slate-800 shadow-2xl group">
                 <Image
-                  src="/images/past-editions/inauguration-2024.jpg"
+                  src="/images/past-editions/stall-2024.jpg"
                   alt="Inauguration ceremony at the 1st edition"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"

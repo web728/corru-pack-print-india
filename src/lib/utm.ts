@@ -3,10 +3,6 @@
  * Server-only module — do not import from client components.
  */
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
 export interface UtmParams {
   source: string;
   medium: string;
@@ -17,26 +13,16 @@ export interface UtmParams {
 
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"] as const;
 
-// ---------------------------------------------------------------------------
-// Public API
-// ---------------------------------------------------------------------------
-
-/**
- * Extract UTM parameters from a URL string (e.g. Referer header or page URL).
- *
- * Returns a `UtmParams` object if at least one UTM parameter is present,
- * or `null` if the URL is empty / has no UTM params.
- */
 export function extractUtmParams(url: string | null): UtmParams | null {
   if (!url) return null;
 
   let searchParams: URLSearchParams;
   try {
-    // Handle both full URLs and bare query strings
     if (url.startsWith("http://") || url.startsWith("https://")) {
       searchParams = new URL(url).searchParams;
     } else if (url.includes("?")) {
-      searchParams = new URLSearchParams(url.split("?")[1] ?? "");
+      const queryString = url.split("?")[1] ?? "";
+      searchParams = new URLSearchParams(queryString);
     } else {
       return null;
     }
@@ -44,15 +30,14 @@ export function extractUtmParams(url: string | null): UtmParams | null {
     return null;
   }
 
-  const source = searchParams.get("utm_source") ?? "";
-  const medium = searchParams.get("utm_medium") ?? "";
-  const campaign = searchParams.get("utm_campaign") ?? "";
-  const term = searchParams.get("utm_term") ?? "";
-  const content = searchParams.get("utm_content") ?? "";
-
-  // Only return if at least one UTM param is present
   const hasAny = UTM_KEYS.some((k) => searchParams.has(k));
   if (!hasAny) return null;
 
-  return { source, medium, campaign, term, content };
+  return {
+    source: searchParams.get("utm_source") ?? "",
+    medium: searchParams.get("utm_medium") ?? "",
+    campaign: searchParams.get("utm_campaign") ?? "",
+    term: searchParams.get("utm_term") ?? "",
+    content: searchParams.get("utm_content") ?? "",
+  };
 }

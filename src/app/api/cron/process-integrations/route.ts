@@ -5,8 +5,37 @@ import { acquireJob, completeJob, failJob, getJobStats, type IntegrationJob } fr
 import { appendToSheet } from "@/lib/google-sheets";
 import { sendConfirmationEmail, sendAdminNotification } from "@/lib/email";
 import { getCollection } from "@/lib/mongodb";
+import { type FormType } from "@/config/event";
 
 const MAX_JOBS_PER_RUN = 10;
+
+/**
+ * MongoDB document ko Google Sheets ke row array me convert karne ke liye helper
+ */
+function mapDocToSheetRow(doc: Record<string, any>, referenceNumber: string): (string | number | boolean)[] {
+  // Common fields handling
+  const name = doc.fullName || doc.companyName || doc.contactPerson || "";
+  const email = doc.email || "";
+  const phone = doc.phone || "";
+  
+  // Dynamic fields based on form type (Categories array to string convertion)
+  const categoryOrType = Array.isArray(doc.productCategories) 
+    ? doc.productCategories.join(", ") 
+    : doc.enquiryType || doc.role || doc.stallPreference || "";
+
+  const createdAt = doc.createdAt ? new Date(doc.createdAt).toISOString() : new Date().toISOString();
+
+  // Primary column structure for Sheet
+  return [
+    referenceNumber,
+    name,
+    email,
+    phone,
+    categoryOrType,
+    doc.message || doc.subject || "",
+    createdAt
+  ];
+}
 
 async function processJob(job: IntegrationJob & { _id: { toHexString(): string } }): Promise<void> {
   const jobId = job._id.toHexString();
@@ -15,15 +44,22 @@ async function processJob(job: IntegrationJob & { _id: { toHexString(): string }
   try {
     switch (jobType) {
       case "google_sheets_sync": {
-        const { sheetName, formType } = payload as { sheetName: string; formType: string };
-        const col = await getCollection(payload.collection as string || "submissions");
+        const { sheetName, collection } = payload as { sheetName: string; collection?: string };
+        const col = await getCollection(collection || "submissions");
         const doc = await col.findOne({ referenceNumber });
+
         if (!doc) {
+          // Document database me nahi mila, double retry karne ki zaroorat nahi
           await completeJob(jobId);
           return;
         }
-        const result = await appendToSheet(sheetName, [referenceNumber, `Retry for ${formType}`]);
-        if (result.status === "appended" || result.status === "duplicate") {
+
+        // Actual MongoDB document parsing for Sheets
+        const rowData = mapDocToSheetRow(doc, referenceNumber);
+
+        const result = await appendToSheet(sheetName, rowData);
+        
+        if (result.status === "appended" || result.status === "duplicate" || result.status === "disabled") {
           await completeJob(jobId);
         } else {
           await failJob(jobId, result.message ?? "sheets_error");
@@ -33,14 +69,13 @@ async function processJob(job: IntegrationJob & { _id: { toHexString(): string }
 
       case "admin_email": {
         const { formType, adminData } = payload as {
-          formType: string;
+          formType: FormType;
           adminData: Parameters<typeof sendAdminNotification>[1];
         };
-        const result = await sendAdminNotification(
-          formType as Parameters<typeof sendAdminNotification>[0],
-          adminData,
-        );
-        if (result.status === "sent") {
+        
+        const result = await sendAdminNotification(formType, adminData);
+        
+        if (result.status === "sent" || result.status === "disabled") {
           await completeJob(jobId);
         } else {
           await failJob(jobId, result.errorMessage ?? "email_error");
@@ -53,8 +88,10 @@ async function processJob(job: IntegrationJob & { _id: { toHexString(): string }
           to: string;
           confirmData: Parameters<typeof sendConfirmationEmail>[1];
         };
+
         const result = await sendConfirmationEmail(to, confirmData);
-        if (result.status === "sent") {
+        
+        if (result.status === "sent" || result.status === "disabled") {
           await completeJob(jobId);
         } else {
           await failJob(jobId, result.errorMessage ?? "email_error");

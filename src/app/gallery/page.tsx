@@ -1,67 +1,68 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Camera, Sparkles, Layers, Image as ImageIcon } from "lucide-react";
+import { ArrowRight, Camera, ImageIcon, Loader2, X, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHero } from "@/components/layout/page-hero";
 import { EVENT } from "@/config/event";
 
-const CATEGORIES = ["All", "Exhibition Floor", "Live Demonstrations", "Networking", "Inauguration"];
-
-const GALLERY_IMAGES = [
-  { src: "/images/gallery/vip-inauguration.jpg", alt: "VIP inauguration ceremony", category: "Inauguration" },
-  { src: "/images/gallery/machinery-display-01.jpg", alt: "Machinery display at the exhibition", category: "Exhibition Floor" },
-  { src: "/images/gallery/stall-interaction-01.jpg", alt: "Exhibitor and visitor interaction at stall", category: "Exhibition Floor" },
-  { src: "/images/gallery/machinery-demo-01.jpg", alt: "Live machinery demonstration", category: "Live Demonstrations" },
-  { src: "/images/gallery/visitor-discussion-01.jpg", alt: "Visitors discussing at an exhibition booth", category: "Networking" },
-  { src: "/images/gallery/booth-premium-01.jpg", alt: "Premium exhibition booth", category: "Exhibition Floor" },
-  { src: "/images/gallery/booth-champion.jpg", alt: "Exhibition booth with visitors", category: "Exhibition Floor" },
-  { src: "/images/gallery/stall-interaction-02.jpg", alt: "Business discussion at exhibition stall", category: "Networking" },
-  { src: "/images/gallery/machinery-demo-02.jpg", alt: "Visitors viewing corrugated machinery", category: "Live Demonstrations" },
-  { src: "/images/gallery/vip-tour.jpg", alt: "VIP guests touring the exhibition", category: "Inauguration" },
-  { src: "/images/gallery/visitor-group.jpg", alt: "Group of visitors at a booth", category: "Networking" },
-  { src: "/images/gallery/exhibition-aisle.jpg", alt: "Exhibition hall aisle with booths", category: "Exhibition Floor" },
-  { src: "/images/gallery/machinery-demo-03.jpg", alt: "Machinery demonstration to visitors", category: "Live Demonstrations" },
-  { src: "/images/gallery/stall-interaction-03.jpg", alt: "Exhibitor presenting to visitors", category: "Exhibition Floor" },
-  { src: "/images/gallery/exhibition-overview.jpg", alt: "Exhibition floor overview", category: "Exhibition Floor" },
-  { src: "/images/gallery/machinery-demo-04.jpg", alt: "Corrugated board machinery in action", category: "Live Demonstrations" },
-  { src: "/images/gallery/booth-setup.jpg", alt: "Exhibition booth setup", category: "Exhibition Floor" },
-  { src: "/images/gallery/visitor-exploring.jpg", alt: "Visitor exploring the exhibition", category: "Exhibition Floor" },
-  { src: "/images/gallery/stall-interaction-04.jpg", alt: "Discussion at exhibition stall", category: "Networking" },
-  { src: "/images/gallery/networking-01.jpg", alt: "Business networking at the expo", category: "Networking" },
-  { src: "/images/gallery/networking-02.jpg", alt: "Industry professionals networking", category: "Networking" },
-  { src: "/images/gallery/machinery-demo-05.jpg", alt: "Packaging machinery demonstration", category: "Live Demonstrations" },
-  { src: "/images/gallery/booth-visit.jpg", alt: "Visitors at exhibition booth", category: "Exhibition Floor" },
-  { src: "/images/gallery/dignitaries-tour.jpg", alt: "Dignitaries touring the exhibition", category: "Inauguration" },
-  { src: "/images/gallery/panel-discussion.jpg", alt: "Conference panel discussion", category: "Networking" },
-  { src: "/images/gallery/edition1-booth-01.jpg", alt: "Exhibition booth at the 1st edition", category: "Exhibition Floor" },
-  { src: "/images/gallery/edition1-machinery-01.jpg", alt: "Machinery display at the 1st edition", category: "Exhibition Floor" },
-  { src: "/images/gallery/edition1-interaction-01.jpg", alt: "Exhibitor interaction at the 1st edition", category: "Networking" },
-  { src: "/images/gallery/edition1-visitors-01.jpg", alt: "Visitors at the 1st edition", category: "Exhibition Floor" },
-  { src: "/images/gallery/edition1-demo-01.jpg", alt: "Live demonstration at the 1st edition", category: "Live Demonstrations" },
-  { src: "/images/gallery/edition1-networking-01.jpg", alt: "Networking at the 1st edition", category: "Networking" },
-  { src: "/images/gallery/edition1-hall-01.jpg", alt: "Exhibition hall at the 1st edition", category: "Exhibition Floor" },
-  { src: "/images/gallery/edition1-booth-02.jpg", alt: "Booth setup at the 1st edition", category: "Exhibition Floor" },
-  { src: "/images/gallery/edition1-display-01.jpg", alt: "Product display at the 1st edition", category: "Exhibition Floor" },
-  { src: "/images/gallery/edition1-stall-01.jpg", alt: "Exhibition stall at the 1st edition", category: "Exhibition Floor" },
-];
+interface GalleryImage {
+  src: string;
+  alt: string;
+  category: string;
+}
 
 export default function GalleryPage() {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
+  const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(12);
+  
+  // Lightbox state for opening clicked image
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  const filteredImages =
-    activeCategory === "All"
-      ? GALLERY_IMAGES
-      : GALLERY_IMAGES.filter((img) => img.category === activeCategory);
+  // Auto fetch images from public/images/gallery folder
+  useEffect(() => {
+    async function fetchImages() {
+      try {
+        const res = await fetch("/api/gallery");
+        const data = await res.json();
+        if (data.images) {
+          setGalleryImages(data.images);
+        }
+      } catch (err) {
+        console.error("Error loading images:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchImages();
+  }, []);
 
-  const visibleImages = filteredImages.slice(0, visibleCount);
+  // Keyboard navigation (Esc for close, Left/Right arrows for next/prev)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedIndex === null) return;
+      if (e.key === "Escape") setSelectedIndex(null);
+      if (e.key === "ArrowLeft") handlePrev();
+      if (e.key === "ArrowRight") handleNext();
+    };
 
-  const handleCategoryChange = (cat: string) => {
-    setActiveCategory(cat);
-    setVisibleCount(12);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedIndex, galleryImages.length]);
+
+  const visibleImages = galleryImages.slice(0, visibleCount);
+
+  const handlePrev = () => {
+    if (selectedIndex === null) return;
+    setSelectedIndex(selectedIndex === 0 ? galleryImages.length - 1 : selectedIndex - 1);
+  };
+
+  const handleNext = () => {
+    if (selectedIndex === null) return;
+    setSelectedIndex(selectedIndex === galleryImages.length - 1 ? 0 : selectedIndex + 1);
   };
 
   return (
@@ -85,13 +86,13 @@ export default function GalleryPage() {
         title="Photo & Video Gallery"
         subtitle="Explore key moments, live machinery, and networking highlights from past editions."
         breadcrumbs={[{ label: "Gallery" }]}
-        backgroundImage="/images/gallery/vip-inauguration.jpg"
+         backgroundImage="/images/gallery/img-015.jpg"
       />
 
       <section className="relative py-16 lg:py-24 z-10 border-b border-slate-800/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          {/* Header & Filter Bar */}
+          {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
             <div>
               <span className="inline-flex items-center gap-2 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded-full mb-3">
@@ -102,34 +103,46 @@ export default function GalleryPage() {
                 Glimpses of {EVENT.name}
               </h2>
             </div>
-
           </div>
 
-          {/* Masonry-Style Grid */}
-          <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-            {visibleImages.map((img, i) => (
-              <div
-                key={`${img.src}-${i}`}
-                className="break-inside-avoid group relative overflow-hidden rounded-2xl border border-slate-800 bg-[#111c38] shadow-xl hover:border-slate-700 transition-all duration-300"
-              >
-                <div className={i % 3 === 0 ? "aspect-[4/3]" : i % 3 === 1 ? "aspect-[3/2]" : "aspect-[16/10]"}>
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    quality={75}
-                    loading={i < 4 ? "eager" : "lazy"}
-                  />
-               
+          {/* Loader State */}
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-20 text-slate-400">
+              <Loader2 className="w-10 h-10 animate-spin text-blue-500 mb-4" />
+              <p>Loading gallery images...</p>
+            </div>
+          ) : visibleImages.length === 0 ? (
+            <div className="text-center py-20 text-slate-400">
+              <p>No images found in public/images/gallery folder.</p>
+            </div>
+          ) : (
+            /* Masonry-Style Grid */
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+              {visibleImages.map((img, i) => (
+                <div
+                  key={`${img.src}-${i}`}
+                  onClick={() => setSelectedIndex(i)}
+                  className="break-inside-avoid group relative overflow-hidden rounded-2xl border border-slate-800 bg-[#111c38] shadow-xl hover:border-blue-500/50 transition-all duration-300 cursor-pointer"
+                >
+                  <div className={i % 3 === 0 ? "aspect-[4/3]" : i % 3 === 1 ? "aspect-[3/2]" : "aspect-[16/10]"}>
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      quality={75}
+                      loading={i < 4 ? "eager" : "lazy"}
+                    />
+                   
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Load More Button */}
-          {visibleCount < filteredImages.length && (
+          {!loading && visibleCount < galleryImages.length && (
             <div className="mt-14 text-center">
               <Button
                 onClick={() => setVisibleCount((prev) => prev + 9)}
@@ -137,7 +150,7 @@ export default function GalleryPage() {
                 className="bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl border border-slate-700 px-8 py-3.5 shadow-xl gap-2"
               >
                 <ImageIcon className="w-4 h-4 text-blue-400" />
-                Load More Photos
+                Load More Photos 
               </Button>
             </div>
           )}
@@ -145,11 +158,75 @@ export default function GalleryPage() {
         </div>
       </section>
 
+      {/* FULL-SCREEN IMAGE POPUP MODAL (LIGHTBOX) */}
+      {selectedIndex !== null && galleryImages[selectedIndex] && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-200"
+          onClick={() => setSelectedIndex(null)}
+        >
+          {/* Top Bar Info & Close Button */}
+          <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-50">
+           
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedIndex(null);
+              }}
+              className="p-2.5 bg-slate-900/80 hover:bg-slate-800 text-white rounded-full border border-slate-700 transition-colors"
+              aria-label="Close modal"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+
+          {/* Previous Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handlePrev();
+            }}
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-50 p-3 bg-slate-900/80 hover:bg-slate-800 text-white rounded-full border border-slate-700 transition-colors"
+            aria-label="Previous image"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+
+          {/* Image Container */}
+          <div 
+            className="relative max-w-5xl max-h-[85vh] w-full h-full flex flex-col items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative w-full h-full min-h-[300px] sm:min-h-[500px]">
+              <Image
+                src={galleryImages[selectedIndex].src}
+                alt={galleryImages[selectedIndex].alt}
+                fill
+                className="object-contain"
+                quality={95}
+                priority
+              />
+            </div>
+         
+          </div>
+
+          {/* Next Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleNext();
+            }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-50 p-3 bg-slate-900/80 hover:bg-slate-800 text-white rounded-full border border-slate-700 transition-colors"
+            aria-label="Next image"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
+      )}
+
       {/* High-Converting CTA Banner */}
       <section className="relative py-16 lg:py-20 z-10 overflow-hidden">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-r from-red-700 via-red-600 to-red-800 rounded-3xl p-8 sm:p-12 border border-red-500/30 text-center shadow-2xl relative overflow-hidden">
-            
             <div className="relative z-10">
               <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
                 Be Part of the Next Gallery
@@ -179,7 +256,6 @@ export default function GalleryPage() {
                 </Link>
               </div>
             </div>
-
           </div>
         </div>
       </section>

@@ -84,7 +84,7 @@ export default function AboutPage() {
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-700/60">
                 <div className="aspect-[4/5] relative">
                   <Image
-                    src="/images/about/business-conversation.jpg"
+                    src="/images/gallery/img-036.jpg"
                     alt="Business professionals at Corru Pack Print India"
                     fill
                     className="object-cover"
