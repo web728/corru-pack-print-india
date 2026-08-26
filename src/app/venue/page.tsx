@@ -155,7 +155,7 @@ export default function VenuePage() {
             >
               <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-700/80 group aspect-[4/3] lg:aspect-[4/5]">
                 <Image
-                  src="/images/venue/registration-desk.jpg"
+                  src="/images/venue/yashobhoomi.png"
                   alt={`Registration desk and hall view at ${EVENT.venue.name}`}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"

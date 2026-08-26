@@ -69,12 +69,6 @@ export default function ExhibitorRegisterPage() {
               <ExhibitorForm />
             </div>
 
-            {/* Security Badge */}
-            <div className="mt-8 pt-6 border-t border-slate-800/60 flex items-center justify-center gap-2 text-xs text-slate-400">
-              <ShieldCheck className="w-4 h-4 text-blue-400" />
-              <span>Directly transmitted to the official {EVENT.name} organizing secretariat.</span>
-            </div>
-
           </div>
 
         </div>

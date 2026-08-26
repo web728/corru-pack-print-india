@@ -69,12 +69,6 @@ export default function VisitorRegisterPage() {
               <VisitorForm />
             </div>
 
-            {/* Bottom Trust Badge */}
-            <div className="mt-10 pt-6 border-t border-slate-800/80 flex items-center justify-center gap-2 text-xs sm:text-sm text-slate-400">
-              <ShieldCheck className="w-4 h-4 text-blue-400 shrink-0" />
-              <span>Instant Access Badge Confirmation • Zero Registration Fee</span>
-            </div>
-
           </div>
 
         </div>

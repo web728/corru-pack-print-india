@@ -213,10 +213,10 @@ export default function ExhibitorsInformationPage() {
               Proven Track Record
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Previous Edition Outcomes
+              Previous Editions Outcomes
             </h2>
             <p className="mt-3 text-slate-400 max-w-xl mx-auto text-sm sm:text-base">
-              Verified feedback from exhibitors at the previous edition.
+              Verified feedback from exhibitors at the previous editions.
             </p>
           </div>
 
@@ -292,7 +292,7 @@ export default function ExhibitorsInformationPage() {
                 Exhibition Scope
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-6">
-                {PRODUCT_CATEGORIES.length} Categories on Display
+               Categories on Display
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {PRODUCT_CATEGORIES.map((cat) => (

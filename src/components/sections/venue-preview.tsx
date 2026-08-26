@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { MapPin, Train, Plane, ArrowRight, Building2 } from "lucide-react";
+import { MapPin, Train, Plane, ArrowRight } from "lucide-react";
 
 export function VenuePreview() {
   return (
@@ -21,8 +21,8 @@ export function VenuePreview() {
           >
             <div className="aspect-[4/3] rounded-3xl overflow-hidden relative shadow-2xl border border-slate-700/60 group">
               <Image
-                src="/images/venue/registration-desk.jpg"
-                alt="Bombay Exhibition Center, NESCO"
+                src="/images/venue/yashobhoomi.png"
+                alt="Yashobhoomi - India International Convention & Expo Centre"
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -35,7 +35,7 @@ export function VenuePreview() {
             <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-[#111c38] px-6 py-3 rounded-2xl shadow-xl border border-slate-700 flex items-center gap-3 whitespace-nowrap">
               <MapPin className="w-5 h-5 text-red-500 shrink-0" />
               <span className="text-sm font-semibold text-white">
-                NESCO, Goregaon, Mumbai
+                Yashobhoomi, Dwarka, New Delhi
               </span>
             </div>
           </motion.div>
@@ -52,13 +52,13 @@ export function VenuePreview() {
               The Venue
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              Bombay Exhibition Centre (BEC)
+              Yashobhoomi (IICC)
             </h2>
             <p className="mt-2 text-lg text-slate-300 font-medium">
-              NESCO Complex, Goregaon, Mumbai, Maharashtra
+              India International Convention &amp; Expo Centre, Dwarka, New Delhi
             </p>
             <p className="mt-4 text-slate-400 text-sm leading-relaxed">
-              India’s premier exhibition venue offering 45,000+ sq. meters of modern, air-conditioned exhibition space strategically located near Western Express Highway.
+              India’s premier state-of-the-art convention and exhibition centre featuring world-class column-free exhibition halls, high-load bearing floors, and advanced heavy-machinery loading bays.
             </p>
 
             <div className="mt-8 space-y-4">
@@ -68,7 +68,7 @@ export function VenuePreview() {
                 </div>
                 <div>
                   <h4 className="font-semibold text-white text-sm">Nearest Airport</h4>
-                  <p className="text-xs text-slate-300 mt-0.5">Chhatrapati Shivaji Maharaj International Airport (BOM) — 10 km</p>
+                  <p className="text-xs text-slate-300 mt-0.5">Indira Gandhi International Airport (DEL) — ~15 mins drive</p>
                 </div>
               </div>
 
@@ -77,8 +77,8 @@ export function VenuePreview() {
                   <Train className="w-5 h-5 text-red-400" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white text-sm">Railway &amp; Metro Connectivity</h4>
-                  <p className="text-xs text-slate-300 mt-0.5">10 mins from Goregaon Railway Station &amp; Ram Mandir Metro Station</p>
+                  <h4 className="font-semibold text-white text-sm">Direct Metro Connectivity</h4>
+                  <p className="text-xs text-slate-300 mt-0.5">Yashobhoomi Dwarka Sector 25 Metro Station (Airport Express Line)</p>
                 </div>
               </div>
             </div>

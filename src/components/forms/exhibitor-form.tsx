@@ -19,16 +19,9 @@ import {
 import Link from "next/link";
 import { 
   Building2, 
-  User, 
-  Mail, 
-  Phone, 
-  Globe, 
   MapPin, 
   LayoutGrid, 
-  MessageSquare, 
   ArrowRight,
-  Sparkles,
-  ShieldCheck
 } from "lucide-react";
 
 const STALL_OPTIONS = [
@@ -60,7 +53,7 @@ export function ExhibitorForm() {
 
   if (result?.success) {
     return (
-      <div className="bg-[#0b1329]/90 border border-green-500/30 rounded-2xl p-8 backdrop-blur-md text-center shadow-2xl animate-in fade-in zoom-in-95 duration-300">
+      <div className="bg-[#111c38] border border-green-500/40 rounded-2xl p-8 backdrop-blur-md text-center shadow-2xl animate-in fade-in zoom-in-95 duration-300">
         <FormStatus
           type="success"
           title="Enquiry Received Successfully!"
@@ -85,9 +78,9 @@ export function ExhibitorForm() {
 
       {/* Section 1: Company & Contact Details */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 pb-2 border-b border-slate-800">
+        <div className="flex items-center gap-2.5 pb-3 border-b border-slate-700/80">
           <Building2 className="w-5 h-5 text-red-500" />
-          <h3 className="text-base font-bold text-white tracking-wide uppercase text-xs">
+          <h3 className="text-sm font-bold text-white tracking-wider uppercase">
             1. Company & Contact Overview
           </h3>
         </div>
@@ -101,7 +94,7 @@ export function ExhibitorForm() {
                 hasError={!!errors.companyName}
                 placeholder="e.g. Apex Corrugation Machinery Pvt Ltd"
                 autoComplete="organization"
-                className="bg-[#0b1329]/90 border-slate-700/80 text-white placeholder:text-slate-500 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl py-3 text-sm transition-all"
+                className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
               />
             </div>
           </FormField>
@@ -116,7 +109,7 @@ export function ExhibitorForm() {
                 hasError={!!errors.contactPerson}
                 placeholder="e.g. Rajesh Kumar"
                 autoComplete="name"
-                className="bg-[#0b1329]/90 border-slate-700/80 text-white placeholder:text-slate-500 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl py-3 text-sm transition-all"
+                className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
               />
             </div>
           </FormField>
@@ -130,7 +123,7 @@ export function ExhibitorForm() {
                 hasError={!!errors.email}
                 placeholder="you@company.com"
                 autoComplete="email"
-                className="bg-[#0b1329]/90 border-slate-700/80 text-white placeholder:text-slate-500 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl py-3 text-sm transition-all"
+                className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
               />
             </div>
           </FormField>
@@ -152,7 +145,7 @@ export function ExhibitorForm() {
                 hasError={!!errors.phone}
                 placeholder="+91 98765 43210"
                 autoComplete="tel"
-                className="bg-[#0b1329]/90 border-slate-700/80 text-white placeholder:text-slate-500 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl py-3 text-sm transition-all"
+                className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
               />
             </div>
           </FormField>
@@ -166,7 +159,7 @@ export function ExhibitorForm() {
                 hasError={!!errors.website}
                 placeholder="https://www.yourcompany.com"
                 autoComplete="url"
-                className="bg-[#0b1329]/90 border-slate-700/80 text-white placeholder:text-slate-500 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl py-3 text-sm transition-all"
+                className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
               />
             </div>
           </FormField>
@@ -174,10 +167,10 @@ export function ExhibitorForm() {
       </div>
 
       {/* Section 2: Location Information */}
-      <div className="space-y-6 pt-4">
-        <div className="flex items-center gap-2 pb-2 border-b border-slate-800">
+      <div className="space-y-6 pt-2">
+        <div className="flex items-center gap-2.5 pb-3 border-b border-slate-700/80">
           <MapPin className="w-5 h-5 text-blue-400" />
-          <h3 className="text-base font-bold text-white tracking-wide uppercase text-xs">
+          <h3 className="text-sm font-bold text-white tracking-wider uppercase">
             2. Business Location
           </h3>
         </div>
@@ -189,7 +182,7 @@ export function ExhibitorForm() {
               {...register("city")} 
               hasError={!!errors.city} 
               placeholder="e.g. Mumbai"
-              className="bg-[#0b1329]/90 border-slate-700/80 text-white placeholder:text-slate-500 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 rounded-xl py-3 text-sm transition-all" 
+              className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 rounded-xl py-3.5 px-4 text-sm font-medium transition-all" 
             />
           </FormField>
 
@@ -199,7 +192,7 @@ export function ExhibitorForm() {
               {...register("state")} 
               hasError={!!errors.state} 
               placeholder="e.g. Maharashtra" 
-              className="bg-[#0b1329]/90 border-slate-700/80 text-white placeholder:text-slate-500 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 rounded-xl py-3 text-sm transition-all"
+              className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
             />
           </FormField>
 
@@ -209,23 +202,23 @@ export function ExhibitorForm() {
               {...register("country")} 
               hasError={!!errors.country} 
               placeholder="e.g. India" 
-              className="bg-[#0b1329]/90 border-slate-700/80 text-white placeholder:text-slate-500 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 rounded-xl py-3 text-sm transition-all"
+              className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
             />
           </FormField>
         </div>
       </div>
 
       {/* Section 3: Product Interest & Stall Preference */}
-      <div className="space-y-6 pt-4">
-        <div className="flex items-center gap-2 pb-2 border-b border-slate-800">
+      <div className="space-y-6 pt-2">
+        <div className="flex items-center gap-2.5 pb-3 border-b border-slate-700/80">
           <LayoutGrid className="w-5 h-5 text-red-500" />
-          <h3 className="text-base font-bold text-white tracking-wide uppercase text-xs">
+          <h3 className="text-sm font-bold text-white tracking-wider uppercase">
             3. Exhibit & Product Profile
           </h3>
         </div>
 
         {/* Multi-Checkbox Container Card */}
-        <div className="bg-[#0b1329]/60 border border-slate-800 rounded-2xl p-5 sm:p-6 backdrop-blur-sm hover:border-slate-700 transition-all">
+        <div className="bg-[#111c38] border border-slate-700/80 rounded-2xl p-5 sm:p-6 backdrop-blur-sm shadow-md">
           <Controller
             name="productCategories"
             control={control}
@@ -251,7 +244,7 @@ export function ExhibitorForm() {
             options={STALL_OPTIONS}
             placeholder="Select preferred booth scheme"
             defaultValue=""
-            className="bg-[#0b1329]/90 border-slate-700/80 text-white rounded-xl py-3 text-sm focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
+            className="bg-[#111c38] border-slate-700 text-white rounded-xl py-3.5 px-4 text-sm font-medium focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
           />
         </FormField>
 
@@ -262,26 +255,26 @@ export function ExhibitorForm() {
             hasError={!!errors.message}
             placeholder="Mention power requirements, heavy machinery dimensions, live demonstration needs, or specific hall locations..."
             rows={4}
-            className="bg-[#0b1329]/90 border-slate-700/80 text-white placeholder:text-slate-500 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl p-4 text-sm transition-all"
+            className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl p-4 text-sm font-medium transition-all"
           />
         </FormField>
       </div>
 
       {/* Terms & Consent Checkbox */}
-      <div className="bg-[#0b1329]/40 border border-slate-800/80 rounded-xl p-4">
+      <div className="bg-[#111c38]/80 border border-slate-700/80 rounded-xl p-4">
         <Controller
           name="consent"
           control={control}
           render={({ field }) => (
             <CheckboxField
               label={
-                <span className="text-xs text-slate-300">
+                <span className="text-xs font-medium text-slate-200">
                   I agree to the{" "}
-                  <Link href="/privacy-policy" className="text-red-400 font-medium hover:underline" target="_blank">
+                  <Link href="/privacy-policy" className="text-red-400 font-semibold hover:underline" target="_blank">
                     Privacy Policy
                   </Link>{" "}
                   and{" "}
-                  <Link href="/terms" className="text-red-400 font-medium hover:underline" target="_blank">
+                  <Link href="/terms" className="text-red-400 font-semibold hover:underline" target="_blank">
                     Terms of Service
                   </Link>
                   . I give consent to be contacted regarding stall allocation and event updates.

@@ -35,7 +35,7 @@ const FAQ_SECTIONS = [
       },
       {
         q: "What product categories are featured?",
-        a: "The expo features 13 product categories including Printing & Converting, Flexo Printing, Die Cutting, Folder Gluer, Automation & Robotics, Adhesives & Consumables, Inks & Coatings, Kraft Paper & Board, Testing Equipment, Material Handling, Spare Parts, Sustainable Solutions, and Allied Machineries.",
+        a: "The expo features product categories including Printing & Converting, Flexo Printing, Die Cutting, Folder Gluer, Automation & Robotics, Adhesives & Consumables, Inks & Coatings, Kraft Paper & Board, Testing Equipment, Material Handling, Spare Parts, Sustainable Solutions, and Allied Machineries.",
       },
       {
         q: "Is there logistics support for exhibitors?",

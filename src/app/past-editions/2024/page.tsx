@@ -135,7 +135,7 @@ export default function Edition2024Page() {
             <div className="lg:col-span-5 relative">
               <div className="relative aspect-[3/4] rounded-3xl overflow-hidden border border-slate-800 shadow-2xl group">
                 <Image
-                  src="/images/past-editions/stall-2024.jpg"
+                  src="/images/gallery/img-006.jpg"
                   alt="Inauguration ceremony at the 1st edition"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -143,14 +143,7 @@ export default function Edition2024Page() {
                   quality={85}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-85" />
-                <div className="absolute bottom-6 left-6 right-6">
-                  <span className="text-xs font-bold uppercase tracking-widest text-amber-400 bg-amber-500/20 border border-amber-500/30 px-3 py-1 rounded-full backdrop-blur-md">
-                    2024 Ribbon Cutting
-                  </span>
-                  <p className="mt-2 text-sm text-slate-200">
-                    Inauguration ceremony marking the launch of the B2B platform.
-                  </p>
-                </div>
+               
               </div>
             </div>
 
@@ -223,9 +216,7 @@ export default function Edition2024Page() {
                   quality={75}
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                  <span className="text-xs font-medium text-white">{img.alt}</span>
-                </div>
+               
               </div>
             ))}
           </div>
@@ -255,55 +246,69 @@ export default function Edition2024Page() {
           </div>
         </div>
       </section>
+{/* CTA Section */}
+<section className="relative py-16 lg:py-20 z-10 overflow-hidden">
+  <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="relative rounded-3xl overflow-hidden border border-slate-700/80 shadow-2xl bg-[#111c38] p-8 sm:p-12 text-center">
+      
+      {/* Glow Effects */}
+      <div className="absolute -top-24 -left-24 w-72 h-72 bg-red-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
 
-      {/* CTA Section */}
-      <section className="relative py-16 lg:py-20 z-10 overflow-hidden">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-3xl overflow-hidden border border-slate-800 shadow-2xl bg-gradient-to-r from-slate-950 via-[#111c38] to-slate-950 p-8 sm:p-12 text-center">
-            
-            {/* Background Image Overlay with Opacity */}
-            <Image
-              src="/images/gallery/booth-premium-01.jpg"
-              alt=""
-              fill
-              className="object-cover opacity-10 pointer-events-none"
-              sizes="100vw"
-              quality={50}
-            />
+      {/* Background Image Overlay with Opacity */}
+      <Image
+        src="/images/gallery/booth-premium-01.jpg"
+        alt=""
+        fill
+        className="object-cover opacity-15 pointer-events-none mix-blend-overlay"
+        sizes="100vw"
+        quality={60}
+      />
 
-            <div className="relative z-10">
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-                Don&apos;t Miss the {EVENT.editionLabel}
-              </h2>
-              <p className="mt-3 text-slate-300 text-base sm:text-lg max-w-xl mx-auto">
-                {EVENT.dates.display} at {EVENT.venue.name}, {EVENT.venue.city}
-              </p>
-
-              <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link href="/exhibitors/register" className="w-full sm:w-auto">
-                  <Button
-                    size="lg"
-                    className="w-full bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl shadow-lg shadow-red-600/25 py-3.5 px-6 flex items-center justify-center gap-2"
-                  >
-                    Book Your Stall
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </Link>
-                <Link href="/visitors/register" className="w-full sm:w-auto">
-                  <Button
-                    size="lg"
-                    variant="secondary-light"
-                    className="w-full bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold rounded-xl py-3.5 px-6"
-                  >
-                    Register as Visitor
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-          </div>
+      <div className="relative z-10 space-y-4">
+        {/* Edition Pill Badge */}
+        <div className="flex justify-center">
+          <span className="px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-red-400 bg-red-950/60 border border-red-500/30 rounded-full">
+            {EVENT.editionLabel}
+          </span>
         </div>
-      </section>
+
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
+          Be Part of India&apos;s Premier Industrial Expo
+        </h2>
+        
+        <p className="text-slate-300 text-base sm:text-lg max-w-xl mx-auto font-medium">
+          {EVENT.dates.display} at {EVENT.venue.name}, {EVENT.venue.city}
+        </p>
+
+        <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link href="/exhibitors/register" className="w-full sm:w-auto">
+            <Button
+              size="lg"
+              className="w-full sm:w-auto bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold rounded-xl shadow-lg shadow-red-600/25 py-3.5 px-8 flex items-center justify-center gap-2 border border-red-500/30 transition-all duration-300"
+            >
+              <span>Book Your Stall</span>
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
+          
+          <Link href="/visitors/register" className="w-full sm:w-auto">
+            <Button
+              size="lg"
+              variant="secondary-light"
+              className="w-full sm:w-auto bg-slate-800/90 hover:bg-slate-700/90 text-white border border-slate-600/80 font-bold rounded-xl py-3.5 px-8 shadow-md transition-all duration-300"
+            >
+              Register as Visitor
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>  
+
+
 
     </div>
   );

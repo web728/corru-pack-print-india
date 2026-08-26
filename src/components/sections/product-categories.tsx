@@ -57,7 +57,7 @@ export function ProductCategories() {
             What&apos;s on Display
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-            13 Product &amp; Technology Categories
+             Product &amp; Technology Categories
           </h2>
           <p className="mt-4 text-slate-300 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed">
             From raw board production to finished packaging — every stage of the corrugated

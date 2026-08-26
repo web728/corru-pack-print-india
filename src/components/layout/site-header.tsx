@@ -25,7 +25,7 @@ const NAV_ITEMS = [
     children: [
       { label: "Why Exhibit", href: "/exhibitors/information" },
       { label: "Register / Book Stall", href: "/exhibitors/register" },
-      { label: "Logistics", href: "/exhibitors/logistics" },
+      // { label: "Logistics", href: "/exhibitors/logistics" },
     ],
   },
   {

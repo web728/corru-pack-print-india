@@ -49,7 +49,7 @@ const FOOTER_NAV = [
     links: [
       { label: "Why Exhibit", href: "/exhibitors/information" },
       { label: "Book Your Stall", href: "/exhibitors/register" },
-      { label: "Logistics", href: "/exhibitors/logistics" },
+      // { label: "Logistics", href: "/exhibitors/logistics" },
       { label: "Advertising", href: "/partners/advertising" },
     ],
   },

@@ -14,6 +14,7 @@ import {
   FormErrorSummary,
 } from "@/components/ui/form-field";
 import Link from "next/link";
+import { Download } from "lucide-react";
 
 const ROLE_OPTIONS = [
   { value: "Manufacturer", label: "Manufacturer" },
@@ -40,12 +41,14 @@ export function BrochureForm() {
 
   if (result?.success) {
     return (
-      <FormStatus
-        type="success"
-        title="Request Received"
-        message="The brochure download link will be sent to your email address."
-        referenceNumber={result.referenceNumber}
-      />
+      <div className="bg-[#111c38] p-8 rounded-2xl border border-emerald-500/40 shadow-2xl animate-in fade-in zoom-in-95 duration-300">
+        <FormStatus
+          type="success"
+          title="Request Received"
+          message="The brochure download link will be sent to your email address."
+          referenceNumber={result.referenceNumber}
+        />
+      </div>
     );
   }
 
@@ -61,6 +64,7 @@ export function BrochureForm() {
         <FormStatus type="error" title="Submission Failed" message={result.error} />
       )}
 
+      {/* Name & Email Fields */}
       <div className="grid sm:grid-cols-2 gap-6">
         <FormField label="Full Name" name="fullName" error={errors.fullName} required>
           <Input
@@ -69,6 +73,7 @@ export function BrochureForm() {
             hasError={!!errors.fullName}
             placeholder="Your full name"
             autoComplete="name"
+            className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 py-3.5 px-4 font-medium rounded-xl focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
           />
         </FormField>
 
@@ -80,34 +85,39 @@ export function BrochureForm() {
             hasError={!!errors.email}
             placeholder="you@company.com"
             autoComplete="email"
+            className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 py-3.5 px-4 font-medium rounded-xl focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
           />
         </FormField>
       </div>
 
+      {/* Phone & Company Fields */}
       <div className="grid sm:grid-cols-2 gap-6">
-        <FormField label="Phone Number" name="phone" error={errors.phone} hint="Optional">
+        <FormField label="Phone Number" name="phone" error={errors.phone} >
           <Input
             id="phone"
             type="tel"
             {...register("phone")}
             hasError={!!errors.phone}
-            placeholder="+919876543210"
+            placeholder="+91 98765 43210"
             autoComplete="tel"
+            className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 py-3.5 px-4 font-medium rounded-xl focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
           />
         </FormField>
 
-        <FormField label="Company" name="company" error={errors.company} hint="Optional">
+        <FormField label="Company" name="company" error={errors.company} >
           <Input
             id="company"
             {...register("company")}
             hasError={!!errors.company}
             placeholder="Company name"
             autoComplete="organization"
+            className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 py-3.5 px-4 font-medium rounded-xl focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
           />
         </FormField>
       </div>
 
-      <FormField label="Role" name="role" error={errors.role} hint="Optional">
+      {/* Role Selection */}
+      <FormField label="Role" name="role" error={errors.role} >
         <Select
           id="role"
           {...register("role")}
@@ -115,34 +125,52 @@ export function BrochureForm() {
           options={ROLE_OPTIONS}
           placeholder="Select role"
           defaultValue=""
+          className="bg-[#111c38] border-slate-700 text-white py-3.5 px-4 font-medium rounded-xl focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
         />
       </FormField>
 
-      <Controller
-        name="consent"
-        control={control}
-        render={({ field }) => (
-          <CheckboxField
-            label={
-              <>
-                I agree to the{" "}
-                <Link href="/privacy-policy" className="text-accent underline" target="_blank">
-                  Privacy Policy
-                </Link>
-              </>
-            }
-            name="consent"
-            error={errors.consent}
-            required
-            checked={field.value === true}
-            onChange={(e) => field.onChange(e.target.checked)}
-            onBlur={field.onBlur}
-          />
-        )}
-      />
+      {/* Consent Checkbox */}
+      <div className="bg-[#111c38] p-4 rounded-xl border border-slate-700/80">
+        <Controller
+          name="consent"
+          control={control}
+          render={({ field }) => (
+            <CheckboxField
+              label={
+                <span className="text-xs sm:text-sm font-medium text-slate-200">
+                  I agree to the{" "}
+                  <Link href="/privacy-policy" className="text-red-400 font-semibold underline hover:text-red-300" target="_blank">
+                    Privacy Policy
+                  </Link>
+                </span>
+              }
+              name="consent"
+              error={errors.consent}
+              required
+              checked={field.value === true}
+              onChange={(e) => field.onChange(e.target.checked)}
+              onBlur={field.onBlur}
+            />
+          )}
+        />
+      </div>
 
-      <Button type="submit" variant="primary" size="lg" loading={isSubmitting} className="w-full sm:w-auto">
-        {isSubmitting ? "Requesting..." : "Request Brochure"}
+      {/* Submit Button */}
+      <Button 
+        type="submit" 
+        variant="primary" 
+        size="lg" 
+        loading={isSubmitting} 
+        className="w-full sm:w-auto bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold text-sm px-8 py-3.5 rounded-xl shadow-lg shadow-red-600/20 border border-red-500/40 flex items-center justify-center gap-2 transition-all duration-300"
+      >
+        {isSubmitting ? (
+          "Requesting..."
+        ) : (
+          <>
+            <span>Request Brochure</span>
+            <Download className="w-4 h-4" />
+          </>
+        )}
       </Button>
     </form>
   );

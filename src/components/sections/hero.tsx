@@ -101,7 +101,7 @@ export function HeroSection() {
           {/* Edition Pill Badge */}
           <motion.div custom={0} variants={fadeUp}>
             <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-red-400 bg-red-500/10 border border-red-500/20 rounded-full mb-8 backdrop-blur-md shadow-xl shadow-red-500/10">
-              <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+              {/* <Sparkles className="w-3.5 h-3.5 text-yellow-300" /> */}
               {EVENT.editionLabel}
             </span>
           </motion.div>

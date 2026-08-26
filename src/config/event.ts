@@ -34,7 +34,7 @@ export const EVENT = {
     },
     futurex: {
       name: "Futurex Trade Fair & Events Pvt. Ltd.",
-      shortName: "Futurex",
+      shortName: "Futurex Group",
       tagline: "Let's Build The Future Together",
     },
   },
@@ -47,10 +47,10 @@ export const EVENT = {
       organization: "ICPMA" as const,
     },
     secondary: {
-      name: "Futurex Trade Fair & Events",
+      name: "Mr. Namit Gupta",
       phone: "+91 9810855697",
       email: "namit@futurextrade.com",
-      organization: "Futurex" as const,
+      organization: "Futurex Group" as const,
     },
   },
 

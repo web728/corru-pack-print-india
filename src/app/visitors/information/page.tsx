@@ -353,7 +353,7 @@ export default function VisitorsInformationPage() {
                   What You&apos;ll Find On Display
                 </h2>
                 <p className="mt-3 text-sm text-slate-300 leading-relaxed">
-                  Discover <span className="text-white font-bold">{PRODUCT_CATEGORIES.length}+ broad product categories</span> showcasing equipment, testing setups, and raw materials.
+                  Discover <span className="text-white font-bold">Broad product categories</span> showcasing equipment, testing setups, and raw materials.
                 </p>
 
                 <div className="mt-8 flex flex-wrap gap-2.5">
@@ -370,10 +370,7 @@ export default function VisitorsInformationPage() {
                 </div>
               </div>
 
-              <div className="mt-10 pt-6 border-t border-slate-800/80 flex items-center gap-3 text-xs text-slate-400">
-                <ShieldCheck className="w-4 h-4 text-blue-400 shrink-0" />
-                <span>Verified global and national machinery suppliers & OEMs.</span>
-              </div>
+            
             </motion.div>
 
           </div>

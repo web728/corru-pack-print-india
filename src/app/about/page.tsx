@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, Variants } from "framer-motion"; // <--- Variants type import kiya
+import { motion, Variants } from "framer-motion";
 import { ArrowRight, Download, CheckCircle2, Layers, Users, Building2, Sparkles } from "lucide-react";
 import { PageHero } from "@/components/layout/page-hero";
 import { EVENT, PRODUCT_CATEGORIES } from "@/config/event";
@@ -28,6 +28,8 @@ const staggerContainer: Variants = {
 };
 
 export default function AboutPage() {
+  const videoId = "VHc1kL5kPaM";
+
   const organizerIcpmaName =
     (EVENT.organizers.icpma as { fullName?: string; shortName: string })?.fullName ||
     EVENT.organizers.icpma.shortName;
@@ -59,7 +61,6 @@ export default function AboutPage() {
           >
             <div className="lg:col-span-3 space-y-6">
               <span className="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-red-400 bg-red-500/10 border border-red-500/20 rounded-full">
-                <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
                 {EVENT.editionLabel}
               </span>
               
@@ -75,35 +76,22 @@ export default function AboutPage() {
                   The exhibition brings exhibitors and industrial buyers face-to-face — creating an ideal ecosystem for live machinery demonstrations, direct B2B deal negotiations, and networking with top decision-makers.
                 </p>
                 <p className="p-4 bg-[#111c38]/80 border-l-4 border-red-500 rounded-r-xl text-slate-200 shadow-lg backdrop-blur-sm">
-                  Jointly organized by <strong className="text-white">{organizerIcpmaName} ({EVENT.organizers.icpma.shortName})</strong> and <strong className="text-white">{organizerFuturexName} ({EVENT.organizers.futurex.shortName})</strong>, scheduled from <span className="text-red-400 font-semibold">{EVENT.dates.display}</span> at {EVENT.venue.fullDisplay}.
+                  Jointly organized by <strong className="text-white">{organizerIcpmaName} </strong> and <strong className="text-white">{organizerFuturexName} </strong>, scheduled from <span className="text-red-400 font-semibold">{EVENT.dates.display}</span> at {EVENT.venue.fullDisplay}.
                 </p>
               </div>
             </div>
 
+            {/* Right Column: Autoplaying Video Embed */}
             <div className="lg:col-span-2">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-700/60">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-slate-700/60 bg-black">
                 <div className="aspect-[4/5] relative">
-                  <Image
-                    src="/images/gallery/img-036.jpg"
-                    alt="Business professionals at Corru Pack Print India"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 40vw"
-                    quality={85}
+                  <iframe
+                    src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playlist=${videoId}&loop=1&controls=1&rel=0`}
+                    title="Corru Pack Print India Overview Video"
+                    className="w-full h-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b1329] via-transparent to-transparent opacity-80" />
-                  
-                  <div className="absolute bottom-6 left-6 right-6 p-4 bg-[#111c38]/90 backdrop-blur-md border border-slate-700/80 rounded-xl">
-                    <div className="flex items-center gap-3">
-                      <div className="p-3 bg-red-600/20 text-red-400 rounded-lg">
-                        <Building2 className="w-6 h-6" />
-                      </div>
-                      <div>
-                        <div className="text-xl font-bold text-white">B2B Networking Hub</div>
-                        <div className="text-xs text-slate-400">Connecting Industry Leaders Nationwide</div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -135,7 +123,7 @@ export default function AboutPage() {
               What the Expo Covers
             </h2>
             <p className="mt-3 text-slate-400 text-base sm:text-lg">
-              {PRODUCT_CATEGORIES.length} product and technology categories spanning every stage of the corrugated packaging value chain.
+              Product and technology categories spanning every stage of the corrugated packaging value chain.
             </p>
           </motion.div>
 
@@ -249,16 +237,21 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA Footer Banner */}
-      <section className="relative py-20 bg-[#070d1d] border-t border-slate-800 overflow-hidden">
+    {/* Dynamic CTA Footer Banner */}
+      <section className="relative py-20 lg:py-24 bg-[#070d1d] border-t border-slate-800/80 overflow-hidden">
+        {/* Background Decorative Gradients */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-red-600/15 rounded-full blur-[160px] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:24px_24px] opacity-30 pointer-events-none" />
+
         <Image
           src="/images/hero/corrugated-closeup.jpg"
-          alt=""
+          alt="Corrugated Packaging Expo background"
           fill
-          className="object-cover opacity-15 mix-blend-luminosity"
+          className="object-cover opacity-10 mix-blend-luminosity"
           sizes="100vw"
           quality={40}
         />
+
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -266,25 +259,45 @@ export default function AboutPage() {
           variants={fadeUp}
           className="relative z-10 max-w-[var(--max-width)] mx-auto px-4 sm:px-6 lg:px-8 text-center"
         >
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Be Part of the {EVENT.editionLabel}
+          {/* Status Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-red-400 bg-red-500/10 border border-red-500/20 rounded-full mb-6">
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+            Limited Stall Space Available
+          </div>
+
+          {/* High-Impact Headline */}
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight max-w-4xl mx-auto leading-tight">
+            Scale Your Business at India&apos;s Largest <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-red-400 to-amber-400">Packaging Machine Expo</span>
           </h2>
-          <p className="mt-3 text-slate-400 text-base sm:text-lg max-w-xl mx-auto">
-            {EVENT.dates.display} at {EVENT.venue.name}, {EVENT.venue.city}
+
+          {/* Value Prop Subtitle */}
+          <p className="mt-4 text-slate-300 text-base sm:text-xl max-w-2xl mx-auto font-normal leading-relaxed">
+            Connect with 10,000+ verified buyers, industrial decision-makers, and key suppliers under one roof.
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/exhibitors/register">
-              <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-xl shadow-red-600/25">
-                Book Your Stall
-                <ArrowRight className="w-4 h-4" />
+          {/* Key Event Details Pills */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm text-slate-300">
+            <span className="px-3.5 py-1.5 bg-[#111c38]/90 border border-slate-700/60 rounded-lg">
+              📅 <strong className="text-white">{EVENT.dates.display}</strong>
+            </span>
+            <span className="px-3.5 py-1.5 bg-[#111c38]/90 border border-slate-700/60 rounded-lg">
+              📍 <strong className="text-white">{EVENT.venue.name}, {EVENT.venue.city}</strong>
+            </span>
+          </div>
+
+          {/* Action-Oriented Buttons */}
+          <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link href="/exhibitors/register" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold rounded-xl shadow-xl shadow-red-600/30 hover:shadow-red-600/50 transition-all duration-200">
+                Reserve Your Exhibition Space
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </Link>
 
-            <Link href="/brochure">
-              <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#111c38] hover:bg-[#18264b] text-white font-semibold rounded-xl border border-slate-700/80 shadow-lg backdrop-blur-md">
-                <Download className="w-4 h-4 text-slate-300" />
-                Download Brochure
+            <Link href="/brochure" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#111c38] hover:bg-[#18264b] text-slate-200 hover:text-white font-semibold rounded-xl border border-slate-700/80 shadow-lg backdrop-blur-md transition-all duration-200">
+                <Download className="w-4 h-4 text-red-400" />
+                Download Event Brochure
               </button>
             </Link>
           </div>

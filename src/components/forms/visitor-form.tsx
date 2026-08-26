@@ -48,12 +48,14 @@ export function VisitorForm() {
 
   if (result?.success) {
     return (
-      <FormStatus
-        type="success"
-        title="Registration Received"
-        message="Thank you for registering. You will receive a confirmation email shortly."
-        referenceNumber={result.referenceNumber}
-      />
+      <div className="bg-[#111c38] border border-green-500/40 rounded-2xl p-8 backdrop-blur-md text-center shadow-2xl animate-in fade-in zoom-in-95 duration-300">
+        <FormStatus
+          type="success"
+          title="Registration Received"
+          message="Thank you for registering. You will receive a confirmation email shortly."
+          referenceNumber={result.referenceNumber}
+        />
+      </div>
     );
   }
 
@@ -71,10 +73,10 @@ export function VisitorForm() {
 
       {/* 1. PERSONAL INFORMATION */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 pb-2 border-b border-slate-800">
-          <User className="w-4 h-4 text-red-500" />
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-            Personal Details
+        <div className="flex items-center gap-2.5 pb-3 border-b border-slate-700/80">
+          <User className="w-5 h-5 text-red-500" />
+          <h3 className="text-sm font-bold uppercase tracking-wider text-white">
+            1. Personal Details
           </h3>
         </div>
 
@@ -87,6 +89,7 @@ export function VisitorForm() {
               hasError={!!errors.fullName}
               placeholder="Enter your full name"
               autoComplete="name"
+              className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
             />
           </FormField>
 
@@ -98,11 +101,12 @@ export function VisitorForm() {
               hasError={!!errors.email}
               placeholder="you@company.com"
               autoComplete="email"
+              className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
             />
           </FormField>
         </div>
 
-        {/* Mobile number with space */}
+        {/* Mobile number */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField label="Phone Number" name="phone" error={errors.phone} required hint="Mobile: +91XXXXXXXXXX">
             <Input
@@ -110,8 +114,9 @@ export function VisitorForm() {
               type="tel"
               {...register("phone")}
               hasError={!!errors.phone}
-              placeholder="+919876543210"
+              placeholder="+91 98765 43210"
               autoComplete="tel"
+              className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-red-500 focus:ring-1 focus:ring-red-500 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
             />
           </FormField>
         </div>
@@ -119,10 +124,10 @@ export function VisitorForm() {
 
       {/* 2. COMPANY DETAILS */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 pb-2 border-b border-slate-800">
-          <Building2 className="w-4 h-4 text-blue-400" />
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-            Company & Designation
+        <div className="flex items-center gap-2.5 pb-3 border-b border-slate-700/80">
+          <Building2 className="w-5 h-5 text-blue-400" />
+          <h3 className="text-sm font-bold uppercase tracking-wider text-white">
+            2. Company & Designation
           </h3>
         </div>
 
@@ -134,6 +139,7 @@ export function VisitorForm() {
               hasError={!!errors.company}
               placeholder="Company / Organization name"
               autoComplete="organization"
+              className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
             />
           </FormField>
 
@@ -144,6 +150,7 @@ export function VisitorForm() {
               hasError={!!errors.designation}
               placeholder="Your Job Title / Designation"
               autoComplete="organization-title"
+              className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
             />
           </FormField>
         </div>
@@ -151,10 +158,10 @@ export function VisitorForm() {
 
       {/* 3. LOCATION */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 pb-2 border-b border-slate-800">
-          <MapPin className="w-4 h-4 text-amber-400" />
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-            Location
+        <div className="flex items-center gap-2.5 pb-3 border-b border-slate-700/80">
+          <MapPin className="w-5 h-5 text-amber-400" />
+          <h3 className="text-sm font-bold uppercase tracking-wider text-white">
+            3. Location
           </h3>
         </div>
 
@@ -164,8 +171,9 @@ export function VisitorForm() {
               id="city"
               {...register("city")}
               hasError={!!errors.city}
-              placeholder="City"
+              placeholder="e.g. Mumbai"
               autoComplete="address-level2"
+              className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
             />
           </FormField>
 
@@ -174,8 +182,9 @@ export function VisitorForm() {
               id="state"
               {...register("state")}
               hasError={!!errors.state}
-              placeholder="State"
+              placeholder="e.g. Maharashtra"
               autoComplete="address-level1"
+              className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
             />
           </FormField>
         </div>
@@ -183,10 +192,10 @@ export function VisitorForm() {
 
       {/* 4. EVENT INTERESTS */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 pb-2 border-b border-slate-800">
-          <Compass className="w-4 h-4 text-emerald-400" />
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-            Visit Preferences
+        <div className="flex items-center gap-2.5 pb-3 border-b border-slate-700/80">
+          <Compass className="w-5 h-5 text-emerald-400" />
+          <h3 className="text-sm font-bold uppercase tracking-wider text-white">
+            4. Visit Preferences
           </h3>
         </div>
 
@@ -199,11 +208,12 @@ export function VisitorForm() {
               options={VISIT_PURPOSE_OPTIONS}
               placeholder="Select main purpose"
               defaultValue=""
+              className="bg-[#111c38] border-slate-700 text-white rounded-xl py-3.5 px-4 text-sm font-medium focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-all"
             />
           </FormField>
         </div>
 
-        <div className="pt-2">
+        <div className="bg-[#111c38] border border-slate-700/80 rounded-2xl p-5 sm:p-6 backdrop-blur-sm shadow-md">
           <Controller
             name="productInterests"
             control={control}
@@ -223,33 +233,35 @@ export function VisitorForm() {
       </div>
 
       {/* 5. CONSENT & SUBMIT */}
-      <div className="pt-6 border-t border-slate-800/80 space-y-6">
-        <Controller
-          name="consent"
-          control={control}
-          render={({ field }) => (
-            <CheckboxField
-              label={
-                <span className="text-xs sm:text-sm text-slate-300">
-                  I agree to the{" "}
-                  <Link href="/privacy-policy" className="text-red-400 hover:text-red-300 underline" target="_blank">
-                    Privacy Policy
-                  </Link>{" "}
-                  and{" "}
-                  <Link href="/terms" className="text-red-400 hover:text-red-300 underline" target="_blank">
-                    Terms of Service
-                  </Link>
-                </span>
-              }
-              name="consent"
-              error={errors.consent}
-              required
-              checked={field.value === true}
-              onChange={(e) => field.onChange(e.target.checked)}
-              onBlur={field.onBlur}
-            />
-          )}
-        />
+      <div className="pt-6 border-t border-slate-700/80 space-y-6">
+        <div className="bg-[#111c38]/80 border border-slate-700/80 rounded-xl p-4">
+          <Controller
+            name="consent"
+            control={control}
+            render={({ field }) => (
+              <CheckboxField
+                label={
+                  <span className="text-xs sm:text-sm font-medium text-slate-200">
+                    I agree to the{" "}
+                    <Link href="/privacy-policy" className="text-red-400 font-semibold hover:text-red-300 underline" target="_blank">
+                      Privacy Policy
+                    </Link>{" "}
+                    and{" "}
+                    <Link href="/terms" className="text-red-400 font-semibold hover:text-red-300 underline" target="_blank">
+                      Terms of Service
+                    </Link>
+                  </span>
+                }
+                name="consent"
+                error={errors.consent}
+                required
+                checked={field.value === true}
+                onChange={(e) => field.onChange(e.target.checked)}
+                onBlur={field.onBlur}
+              />
+            )}
+          />
+        </div>
 
         <div className="pt-2">
           <Button

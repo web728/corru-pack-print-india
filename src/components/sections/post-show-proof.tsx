@@ -24,13 +24,13 @@ export function PostShowProof() {
       <div className="relative max-w-[var(--max-width)] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-red">
-            Previous Edition Results
+            Previous Editions Results
           </span>
           <h2 className="mt-3 text-3xl sm:text-4xl font-bold text-text-on-dark tracking-tight">
             Proven Outcomes for Exhibitors
           </h2>
           <p className="mt-4 text-text-on-dark/50 max-w-2xl mx-auto">
-            Verified feedback from exhibitors who participated at the 2nd Edition.
+            Verified feedback from exhibitors who participated at the Previous Editions.
           </p>
         </div>
 

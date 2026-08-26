@@ -94,7 +94,7 @@ export function DualPathway() {
               {/* Post-show proof */}
               <div className="border border-slate-700/60 pt-6 mb-8 bg-[#0b1329]/60 rounded-2xl p-4">
                 <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest mb-4 text-center">
-                  Previous Edition Results
+                  Previous Editions Results
                 </p>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {POST_SHOW_STATS.slice(0, 4).map((stat) => (

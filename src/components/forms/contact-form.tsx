@@ -15,7 +15,7 @@ import {
   FormErrorSummary,
 } from "@/components/ui/form-field";
 import Link from "next/link";
-import { Send, Sparkles, ShieldCheck } from "lucide-react";
+import { Send } from "lucide-react";
 
 const ENQUIRY_OPTIONS = [
   { value: "General", label: "General Inquiry" },
@@ -42,7 +42,7 @@ export function ContactForm() {
 
   if (result?.success) {
     return (
-      <div className="bg-[#0b1329] p-8 rounded-2xl border border-emerald-500/30 shadow-2xl">
+      <div className="bg-[#111c38] p-8 rounded-2xl border border-emerald-500/40 shadow-2xl animate-in fade-in zoom-in-95 duration-300">
         <FormStatus
           type="success"
           title="Message Sent Successfully!"
@@ -74,7 +74,7 @@ export function ContactForm() {
             hasError={!!errors.fullName}
             placeholder="e.g. Rahul Sharma"
             autoComplete="name"
-            className="bg-[#0b1329]/90 border-slate-700/80 text-white placeholder:text-slate-500 rounded-xl focus:border-red-500 transition-all duration-200"
+            className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 py-3.5 px-4 font-medium rounded-xl focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
           />
         </FormField>
 
@@ -86,7 +86,7 @@ export function ContactForm() {
             hasError={!!errors.email}
             placeholder="you@company.com"
             autoComplete="email"
-            className="bg-[#0b1329]/90 border-slate-700/80 text-white placeholder:text-slate-500 rounded-xl focus:border-red-500 transition-all duration-200"
+            className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 py-3.5 px-4 font-medium rounded-xl focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
           />
         </FormField>
       </div>
@@ -101,7 +101,7 @@ export function ContactForm() {
             hasError={!!errors.phone}
             placeholder="+91 98765 43210"
             autoComplete="tel"
-            className="bg-[#0b1329]/90 border-slate-700/80 text-white placeholder:text-slate-500 rounded-xl focus:border-red-500 transition-all duration-200"
+            className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 py-3.5 px-4 font-medium rounded-xl focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
           />
         </FormField>
 
@@ -113,7 +113,7 @@ export function ContactForm() {
             options={ENQUIRY_OPTIONS}
             placeholder="Select topic..."
             defaultValue=""
-            className="bg-[#0b1329]/90 border-slate-700/80 text-white rounded-xl focus:border-red-500 transition-all duration-200"
+            className="bg-[#111c38] border-slate-700 text-white py-3.5 px-4 font-medium rounded-xl focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
           />
         </FormField>
       </div>
@@ -125,7 +125,7 @@ export function ContactForm() {
           {...register("subject")}
           hasError={!!errors.subject}
           placeholder="Brief topic summary (e.g. Stall Availability in Hall 2)"
-          className="bg-[#0b1329]/90 border-slate-700/80 text-white placeholder:text-slate-500 rounded-xl focus:border-red-500 transition-all duration-200"
+          className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 py-3.5 px-4 font-medium rounded-xl focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
         />
       </FormField>
 
@@ -137,21 +137,21 @@ export function ContactForm() {
           hasError={!!errors.message}
           placeholder="Please share your specific requirement or questions..."
           rows={5}
-          className="bg-[#0b1329]/90 border-slate-700/80 text-white placeholder:text-slate-500 rounded-xl focus:border-red-500 transition-all duration-200"
+          className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 py-3.5 px-4 font-medium rounded-xl focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all"
         />
       </FormField>
 
       {/* Consent Checkbox */}
-      <div className="bg-[#0b1329]/50 p-4 rounded-xl border border-slate-800/80">
+      <div className="bg-[#111c38] p-4 rounded-xl border border-slate-700/80">
         <Controller
           name="consent"
           control={control}
           render={({ field }) => (
             <CheckboxField
               label={
-                <span className="text-xs text-slate-300">
+                <span className="text-xs sm:text-sm font-medium text-slate-200">
                   I agree to the{" "}
-                  <Link href="/privacy-policy" className="text-red-400 font-medium underline hover:text-red-300" target="_blank">
+                  <Link href="/privacy-policy" className="text-red-400 font-semibold underline hover:text-red-300" target="_blank">
                     Privacy Policy
                   </Link>{" "}
                   and authorize the team to contact me via Email or WhatsApp.
@@ -172,7 +172,7 @@ export function ContactForm() {
       <Button
         type="submit"
         loading={isSubmitting}
-        className="w-full sm:w-auto bg-red-600 hover:bg-red-500 text-white font-bold text-sm px-8 py-3.5 rounded-xl shadow-xl shadow-red-600/20 border border-red-500/40 flex items-center justify-center gap-2 transition-all duration-300"
+        className="w-full sm:w-auto bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold text-sm px-8 py-3.5 rounded-xl shadow-lg shadow-red-600/20 border border-red-500/40 flex items-center justify-center gap-2 transition-all duration-300"
       >
         {isSubmitting ? (
           "Sending Inquiry..."

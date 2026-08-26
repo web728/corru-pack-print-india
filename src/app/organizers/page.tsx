@@ -47,23 +47,26 @@ export default function OrganizersPage() {
         backgroundImage="/images/about/conference-address.jpg"
       />
 
-      <section className="relative py-12 bg-[#070d1d] border-b border-slate-800">
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          variants={fadeUp}
-          className="max-w-[var(--max-width)] mx-auto px-4 sm:px-6 lg:px-8 text-center"
-        >
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-red-400 bg-red-500/10 border border-red-500/20 rounded-full mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
-            Strategic Partnership
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Building India&apos;s Grandest B2B Packaging Ecosystem
-          </h2>
-        </motion.div>
-      </section>
+     <section className="relative py-12 bg-[#070d1d] border-b border-slate-800">
+  <motion.div 
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, margin: "-50px" }}
+    variants={fadeUp}
+    className="max-w-[var(--max-width)] mx-auto px-4 sm:px-6 lg:px-8 text-center"
+  >
+    <span className="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-red-400 bg-red-500/10 border border-red-500/20 rounded-full mb-3">
+      <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+      Strategic Collaboration
+    </span>
+    <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+      Empowering India&apos;s Corrugated Packaging Industry
+    </h2>
+    <p className="mt-2 text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
+      Bringing together key industry leaders, manufacturers, and technology innovators under one platform.
+    </p>
+  </motion.div>
+</section>
 
       {/* ICPMA Section */}
       <section className="relative py-20 lg:py-24 bg-[#0b1329] overflow-hidden">
@@ -181,115 +184,116 @@ export default function OrganizersPage() {
       </div>
 
       {/* Futurex Section */}
-      <section className="relative py-20 lg:py-24 bg-[#070d1d] overflow-hidden">
-        <div className="absolute top-1/3 right-0 w-[350px] h-[350px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
+<section className="relative py-20 lg:py-24 bg-[#070d1d] overflow-hidden">
+  <div className="absolute top-1/3 right-0 w-[350px] h-[350px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
 
-        <div className="max-w-[var(--max-width)] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={fadeUp}
-            className="grid lg:grid-cols-5 gap-12 lg:gap-16 items-start"
+  <div className="max-w-[var(--max-width)] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <motion.div 
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
+      variants={fadeUp}
+      className="grid lg:grid-cols-5 gap-12 lg:gap-16 items-start"
+    >
+      <div className="lg:col-span-3">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-5 mb-8 pb-6 border-b border-slate-800">
+          
+          {/* Futurex Logo Link */}
+          <Link 
+            href={futurexWebsite} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="w-44 h-32 rounded-2xl bg-[#111c38] border border-slate-700/80 hover:border-blue-500/50 p-4 flex items-center justify-center shrink-0 shadow-lg relative group transition-all duration-300 hover:scale-105"
           >
-            <div className="lg:col-span-3">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-5 mb-8 pb-6 border-b border-slate-800">
-                
-                {/* Futurex Logo Link with Hover Scale */}
-                <Link 
-                  href={futurexWebsite} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="w-46 h-38 rounded-2xl bg-[#111c38] border border-slate-700/80 hover:border-blue-500/50 p-3 flex items-center justify-center shrink-0 shadow-lg relative group transition-all duration-300 hover:scale-105"
-                >
-                  <Image
-                    src="/logo/futurex-trade-fair-events-logo.png"
-                    alt={`${futurexShort} Logo`}
-                    width={154}
-                    height={154}
-                    className="object-contain transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <span className="absolute bottom-2 right-2 p-1 rounded-md bg-slate-900/80 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </span>
-                </Link>
+            <Image
+              src="/logo/futurex-trade-fair-events-logo.png"
+              alt={`${futurexShort} Logo`}
+              width={140}
+              height={140}
+              className="object-contain transition-transform duration-300 group-hover:scale-105"
+            />
+            <span className="absolute bottom-2 right-2 p-1 rounded-md bg-slate-900/80 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">
+              <ExternalLink className="w-3.5 h-3.5" />
+            </span>
+          </Link>
 
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded-md border border-blue-500/20">
-                    Trade Fair &amp; Event Management
-                  </span>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
-                    {futurexShort}
-                  </h2>
-                  <p className="text-slate-400 text-sm">{futurexName}</p>
-                </div>
-              </div>
-
-              <div className="space-y-4 text-slate-300 text-base leading-relaxed">
-                <p>
-                  <strong className="text-white">{futurexName}</strong> aims to bring all stakeholders of a particular industry together by providing ideal business platforms through Exhibitions, Seminars, Corporate Events, and Discussions.
-                </p>
-                <p>
-                  Understanding specific industry requirements and market dynamics is Futurex&apos;s specialty. Powered by an expert team and a professional approach, Futurex creates seamless, multidimensional business avenues trusted by industry experts globally.
-                </p>
-                <p>
-                  With the core motto <em className="text-slate-100 font-medium">&ldquo;{futurexTagline}&rdquo;</em>, Futurex manages end-to-end venue operations, visitor mobilization, international exhibitor management, and marketing execution for {EVENT.fullName}.
-                </p>
-              </div>
-
-              <motion.div 
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={staggerContainer}
-                className="mt-8 grid sm:grid-cols-2 gap-4"
-              >
-                {[
-                  "Specialists in B2B International Trade Fairs",
-                  "Expert Manpower & Seamless Operations",
-                  "Global Buyer & Exhibitor Networking",
-                  "Cost-Effective Business Growth Platforms",
-                ].map((feat, i) => (
-                  <motion.div key={i} variants={fadeUp} className="flex items-center gap-3 p-3.5 rounded-xl bg-[#111c38]/50 border border-slate-800">
-                    <CheckCircle2 className="w-5 h-5 text-blue-400 shrink-0" />
-                    <span className="text-sm font-medium text-slate-200">{feat}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-
-            <div className="lg:col-span-2">
-              <div className="bg-[#111c38]/60 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-md shadow-xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl pointer-events-none" />
-                
-                <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-6">
-                  <Target className="w-5 h-5 text-blue-400" />
-                  Futurex Profile
-                </h3>
-
-                <dl className="space-y-4 divide-y divide-slate-800/80">
-                  <div className="pt-3 first:pt-0">
-                    <dt className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tagline</dt>
-                    <dd className="text-base font-semibold text-white mt-1">&ldquo;{futurexTagline}&rdquo;</dd>
-                  </div>
-                  <div className="pt-3">
-                    <dt className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Core Specialization</dt>
-                    <dd className="text-base font-semibold text-white mt-1">B2B Trade Shows &amp; Conferences</dd>
-                  </div>
-                  <div className="pt-3">
-                    <dt className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Primary Responsibility</dt>
-                    <dd className="text-base font-semibold text-white mt-1">Operations, Logistics &amp; Marketing</dd>
-                  </div>
-                  <div className="pt-3">
-                    <dt className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Role in Exhibition</dt>
-                    <dd className="text-base font-semibold text-blue-400 mt-1">Joint Organizer &amp; Manager</dd>
-                  </div>
-                </dl>
-              </div>
-            </div>
-          </motion.div>
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-wider text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded-md border border-blue-500/20">
+              International Exhibition Management
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2">
+              {futurexShort}
+            </h2>
+            <p className="text-slate-400 text-sm">{futurexName}</p>
+          </div>
         </div>
-      </section>
+
+        <div className="space-y-4 text-slate-300 text-base leading-relaxed">
+          <p>
+            <strong className="text-white">{futurexName}</strong> is a premier trade fair organizer specializing in high-impact B2B exhibitions, international conferences, and global business forums across South Asia.
+          </p>
+          <p>
+            With deep domain expertise and a global network, Futurex bridges the gap between machinery manufacturers and active industrial buyers through market-driven platforms designed for direct trade and strategic partnerships.
+          </p>
+          <p className="p-4 bg-[#111c38]/60 border-l-4 border-blue-500 rounded-r-xl text-slate-200 shadow-sm">
+            For <strong className="text-white">{EVENT.fullName}</strong>, Futurex manages end-to-end venue execution, international exhibitor acquisition, global delegation sourcing, and large-scale visitor mobilization.
+          </p>
+        </div>
+
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          className="mt-8 grid sm:grid-cols-2 gap-4"
+        >
+          {[
+            "Turnkey Trade Show Infrastructure & Execution",
+            "Targeted B2B Buyer Sourcing & Promotion",
+            "Global Exhibitor Acquisition & Logistics",
+            "Seamless On-Site Visitor Experience",
+          ].map((feat, i) => (
+            <motion.div key={i} variants={fadeUp} className="flex items-center gap-3 p-3.5 rounded-xl bg-[#111c38]/50 border border-slate-800">
+              <CheckCircle2 className="w-5 h-5 text-blue-400 shrink-0" />
+              <span className="text-sm font-medium text-slate-200">{feat}</span>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Structured Profile Card Matching ICPMA */}
+      <div className="lg:col-span-2">
+        <div className="bg-[#111c38]/60 border border-slate-800 rounded-2xl p-6 sm:p-8 backdrop-blur-md shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl pointer-events-none" />
+          
+          <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-6 border-b border-slate-800/80 pb-4">
+            <Target className="w-5 h-5 text-blue-400" />
+            Futurex Profile
+          </h3>
+
+          <dl className="space-y-4 divide-y divide-slate-800/80">
+            <div className="pt-3 first:pt-0">
+              <dt className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Entity Type</dt>
+              <dd className="text-base font-semibold text-white mt-1">International Trade Fair Organizer</dd>
+            </div>
+            <div className="pt-3">
+              <dt className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Core Specialization</dt>
+              <dd className="text-base font-semibold text-white mt-1">B2B Industrial Expos &amp; Conferences</dd>
+            </div>
+            <div className="pt-3">
+              <dt className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Primary Responsibility</dt>
+              <dd className="text-base font-semibold text-white mt-1">Venue Operations, Buyer Sourcing &amp; Marketing</dd>
+            </div>
+            <div className="pt-3">
+              <dt className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Role in Exhibition</dt>
+              <dd className="text-base font-semibold text-blue-400 mt-1">Joint Organizer &amp; Operations Lead</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </motion.div>
+  </div>
+</section>
 
       {/* CTA Section */}
       <section className="relative py-20 bg-[#0b1329] border-t border-slate-800">
