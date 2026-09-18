@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { useForm, Controller, type FieldError } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { exhibitorSchema, type ExhibitorFormData } from "@/schemas";
@@ -16,11 +17,12 @@ import {
   FormStatus,
   FormErrorSummary,
 } from "@/components/ui/form-field";
+import ReCaptcha, { type ReCaptchaRef } from "@/components/ReCaptcha"; // <-- naya import, apne actual path se adjust karo
 import Link from "next/link";
-import { 
-  Building2, 
-  MapPin, 
-  LayoutGrid, 
+import {
+  Building2,
+  MapPin,
+  LayoutGrid,
   ArrowRight,
 } from "lucide-react";
 
@@ -51,6 +53,27 @@ export function ExhibitorForm() {
     endpoint: "/api/forms/exhibitor",
   });
 
+  // --- reCAPTCHA state ---
+  const recaptchaRef = useRef<ReCaptchaRef>(null);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [recaptchaError, setRecaptchaError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (result) {
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
+    }
+  }, [result]);
+
+  const onSubmit = (data: ExhibitorFormData) => {
+    if (!recaptchaToken) {
+      setRecaptchaError("Please verify you're not a robot.");
+      return;
+    }
+    setRecaptchaError(null);
+    submit({ ...data, recaptchaToken });
+  };
+
   if (result?.success) {
     return (
       <div className="bg-[#111c38] border border-green-500/40 rounded-2xl p-8 backdrop-blur-md text-center shadow-2xl animate-in fade-in zoom-in-95 duration-300">
@@ -65,11 +88,7 @@ export function ExhibitorForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit((data) => submit(data))}
-      noValidate
-      className="space-y-8"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-8">
       <FormErrorSummary errors={errors} />
 
       {result?.error && (
@@ -130,11 +149,11 @@ export function ExhibitorForm() {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-6">
-          <FormField 
-            label="Phone Number" 
-            name="phone" 
-            error={errors.phone} 
-            required 
+          <FormField
+            label="Phone Number"
+            name="phone"
+            error={errors.phone}
+            required
             hint="Include country code (+91)"
           >
             <div className="relative">
@@ -150,7 +169,7 @@ export function ExhibitorForm() {
             </div>
           </FormField>
 
-          <FormField label="Company Website" name="website" error={errors.website} hint="Optional">
+          <FormField label="Company Website" name="website" error={errors.website} >
             <div className="relative">
               <Input
                 id="website"
@@ -177,31 +196,31 @@ export function ExhibitorForm() {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <FormField label="City" name="city" error={errors.city} required>
-            <Input 
-              id="city" 
-              {...register("city")} 
-              hasError={!!errors.city} 
+            <Input
+              id="city"
+              {...register("city")}
+              hasError={!!errors.city}
               placeholder="e.g. Mumbai"
-              className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 rounded-xl py-3.5 px-4 text-sm font-medium transition-all" 
+              className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
             />
           </FormField>
 
           <FormField label="State" name="state" error={errors.state} required>
-            <Input 
-              id="state" 
-              {...register("state")} 
-              hasError={!!errors.state} 
-              placeholder="e.g. Maharashtra" 
+            <Input
+              id="state"
+              {...register("state")}
+              hasError={!!errors.state}
+              placeholder="e.g. Maharashtra"
               className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
             />
           </FormField>
 
           <FormField label="Country" name="country" error={errors.country} required>
-            <Input 
-              id="country" 
-              {...register("country")} 
-              hasError={!!errors.country} 
-              placeholder="e.g. India" 
+            <Input
+              id="country"
+              {...register("country")}
+              hasError={!!errors.country}
+              placeholder="e.g. India"
               className="bg-[#111c38] border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 rounded-xl py-3.5 px-4 text-sm font-medium transition-all"
             />
           </FormField>
@@ -248,7 +267,7 @@ export function ExhibitorForm() {
           />
         </FormField>
 
-        <FormField label="Additional Requirements / Specific Requests" name="message" error={errors.message} hint="Optional">
+        <FormField label="Additional Requirements / Specific Requests" name="message" error={errors.message} >
           <Textarea
             id="message"
             {...register("message")}
@@ -291,20 +310,32 @@ export function ExhibitorForm() {
         />
       </div>
 
+      {/* reCAPTCHA v2 widget */}
+      <div>
+        <ReCaptcha
+          ref={recaptchaRef}
+          siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+          onVerify={setRecaptchaToken}
+          onExpire={() => setRecaptchaToken(null)}
+        />
+        {recaptchaError && (
+          <p className="text-red-500 text-xs mt-2">{recaptchaError}</p>
+        )}
+      </div>
+
       {/* Action Button */}
       <div className="pt-2">
-        <Button 
-          type="submit" 
-          variant="primary" 
-          size="lg" 
-          loading={isSubmitting} 
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          loading={isSubmitting}
           className="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-red-600/25 transition-all flex items-center justify-center gap-2 group text-base"
         >
           <span>{isSubmitting ? "Submitting Enquiry..." : "Submit Exhibitor Enquiry"}</span>
           {!isSubmitting && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
         </Button>
       </div>
-
     </form>
   );
 }

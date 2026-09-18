@@ -2,16 +2,16 @@
   "name": "corrupack-2028",
   "version": "0.1.0",
   "private": true,
- "scripts": {
-  "dev": "next dev",
-  "build": "next build",
-  "start": "next start",
-  "lint": "eslint",
-  "typecheck": "tsc --noEmit",
-  "test": "vitest run",
-  "test:watch": "vitest",
-  "test:e2e": "playwright test"
-},
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
+  },
   "dependencies": {
     "@hookform/resolvers": "^5.5.7",
     "class-variance-authority": "^0.7.1",
@@ -24,6 +24,7 @@
     "nodemailer": "^9.0.5",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "react-google-recaptcha": "^3.1.0",
     "react-hook-form": "^7.83.0",
     "resend": "^6.18.1",
     "tailwind-merge": "^3.6.0",
@@ -38,6 +39,7 @@
     "@types/nodemailer": "^8.0.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/react-google-recaptcha": "^2.1.9",
     "@vitejs/plugin-react": "^6.0.5",
     "eslint": "^9",
     "eslint-config-next": "^15.3.0",

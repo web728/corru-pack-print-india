@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { brochureSchema, type BrochureFormData } from "@/schemas";
@@ -13,6 +14,7 @@ import {
   FormStatus,
   FormErrorSummary,
 } from "@/components/ui/form-field";
+import ReCaptcha, { type ReCaptchaRef } from "@/components/ReCaptcha"; // <-- naya import, apne actual path se adjust karo
 import Link from "next/link";
 import { Download } from "lucide-react";
 
@@ -39,6 +41,27 @@ export function BrochureForm() {
     endpoint: "/api/forms/brochure",
   });
 
+  // --- reCAPTCHA state ---
+  const recaptchaRef = useRef<ReCaptchaRef>(null);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [recaptchaError, setRecaptchaError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (result) {
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
+    }
+  }, [result]);
+
+  const onSubmit = (data: BrochureFormData) => {
+    if (!recaptchaToken) {
+      setRecaptchaError("Please verify you're not a robot.");
+      return;
+    }
+    setRecaptchaError(null);
+    submit({ ...data, recaptchaToken });
+  };
+
   if (result?.success) {
     return (
       <div className="bg-[#111c38] p-8 rounded-2xl border border-emerald-500/40 shadow-2xl animate-in fade-in zoom-in-95 duration-300">
@@ -53,11 +76,7 @@ export function BrochureForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit((data) => submit(data))}
-      noValidate
-      className="space-y-6"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
       <FormErrorSummary errors={errors} />
 
       {result?.error && (
@@ -155,12 +174,25 @@ export function BrochureForm() {
         />
       </div>
 
+      {/* reCAPTCHA v2 widget */}
+      <div>
+        <ReCaptcha
+          ref={recaptchaRef}
+          siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+          onVerify={setRecaptchaToken}
+          onExpire={() => setRecaptchaToken(null)}
+        />
+        {recaptchaError && (
+          <p className="text-red-500 text-xs mt-2">{recaptchaError}</p>
+        )}
+      </div>
+
       {/* Submit Button */}
-      <Button 
-        type="submit" 
-        variant="primary" 
-        size="lg" 
-        loading={isSubmitting} 
+      <Button
+        type="submit"
+        variant="primary"
+        size="lg"
+        loading={isSubmitting}
         className="w-full sm:w-auto bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold text-sm px-8 py-3.5 rounded-xl shadow-lg shadow-red-600/20 border border-red-500/40 flex items-center justify-center gap-2 transition-all duration-300"
       >
         {isSubmitting ? (
