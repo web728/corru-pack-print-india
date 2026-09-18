@@ -12,42 +12,7 @@ export function AboutPreview() {
 
   return (
     <>
-      {/* 1. Modal / Pop-up Video (Page open hone par floating overlay) */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 sm:p-6"
-          >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              className="relative w-full max-w-4xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl border border-slate-700"
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="absolute top-4 right-4 z-10 p-2.5 bg-black/60 hover:bg-red-600 text-white rounded-full transition-colors border border-white/20"
-                aria-label="Close modal"
-              >
-                <X className="w-6 h-6" />
-              </button>
-
-              {/* YouTube Autoplay iFrame inside Modal */}
-              <iframe
-                src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&enablejsapi=1&rel=0`}
-                title="Corru Pack Print India Video"
-                className="w-full h-full border-0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+     
 
       {/* 2. Main About Section */}
       <section className="relative bg-[#0b1329] py-20 lg:py-28 text-white overflow-hidden border-t border-slate-800/80">
@@ -149,16 +114,6 @@ export function AboutPreview() {
                 />
               </div>
 
-              {/* Floating Stat Badge Left */}
-              <div className="absolute -bottom-6 -left-4 sm:-left-6 bg-[#111c38] p-5 rounded-2xl shadow-2xl border border-slate-700 flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0">
-                  <Users className="w-6 h-6 text-red-400" />
-                </div>
-                <div>
-                  <div className="text-2xl font-black text-white tracking-tight">3,000+</div>
-                  <div className="text-xs text-slate-300 font-medium">FCBM Network Manufacturers</div>
-                </div>
-              </div>
 
             </motion.div>
 

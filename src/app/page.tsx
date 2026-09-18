@@ -17,7 +17,7 @@ export default function HomePage() {
       <AboutPreview />
       <DualPathway />
       <ProductCategories />
-      <PostShowProof />
+      {/* <PostShowProof /> */}
       <VenuePreview />
       <CTABanner />
       <NewsletterBlock />
