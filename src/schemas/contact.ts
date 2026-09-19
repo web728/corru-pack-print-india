@@ -4,30 +4,31 @@ export const contactSchema = z.object({
   fullName: z
     .string()
     .min(1, "Full name is required")
-    .max(100, "Full name must not exceed 100 characters")
     .trim(),
+
   email: z
     .string()
     .email("Please enter a valid email address")
     .trim()
     .toLowerCase(),
+
+  // Phone check optional
   phone: z.string().trim().optional().or(z.literal("")),
-  enquiryType: z.enum(
-    ["General", "Exhibitor", "Visitor", "Sponsorship", "Media", "Other"],
-    { message: "Please select an enquiry type" },
-  ),
-  subject: z
-    .string()
-    .min(5, "Subject must be at least 5 characters")
-    .max(200, "Subject must not exceed 200 characters")
-    .trim(),
-  message: z
-    .string()
-    .min(10, "Message must be at least 10 characters")
-    .max(2000, "Message must not exceed 2000 characters")
-    .trim(),
+
+  // Enquiry type drop-down ko optional bana diya hai
+  enquiryType: z
+    .enum(["General", "Exhibitor", "Visitor", "Sponsorship", "Media", "Other"])
+    .optional()
+    .or(z.literal("")),
+
+  // Subject par se min(5) aur max(200) ki restriction hata di hai
+  subject: z.string().trim().optional().or(z.literal("")),
+
+  // Message par se min(10) restriction hata di hai
+  message: z.string().trim().optional().or(z.literal("")),
+
   consent: z.literal(true, {
-    errorMap: () => ({ message: "You must agree to the terms to proceed" }),
+    errorMap: () => ({ message: "You must agree to proceed" }),
   }),
 });
 

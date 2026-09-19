@@ -71,13 +71,17 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.hcaptcha.com https://*.hcaptcha.com",
+              // Google reCAPTCHA v2 needs www.google.com (script + api.js) and
+              // www.gstatic.com (recaptcha.js runtime it pulls in), alongside
+              // the existing hCaptcha allowances.
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.hcaptcha.com https://*.hcaptcha.com https://www.google.com https://www.gstatic.com",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https:",
               "font-src 'self' data:",
-              "connect-src 'self' https://api.hcaptcha.com https://*.hcaptcha.com",
-              "frame-src 'self' https://newassets.hcaptcha.com https://*.hcaptcha.com https://www.youtube.com https://www.youtube-nocookie.com",
-              "child-src 'self' https://www.youtube.com https://www.youtube-nocookie.com",
+              "connect-src 'self' https://api.hcaptcha.com https://*.hcaptcha.com https://www.google.com",
+              // reCAPTCHA's checkbox + challenge UI render inside a google.com iframe.
+              "frame-src 'self' https://newassets.hcaptcha.com https://*.hcaptcha.com https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com",
+              "child-src 'self' https://www.google.com https://www.youtube.com https://www.youtube-nocookie.com",
               "base-uri 'self'",
               "form-action 'self'",
             ].join("; "),

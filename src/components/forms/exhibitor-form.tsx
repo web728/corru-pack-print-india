@@ -236,24 +236,23 @@ export function ExhibitorForm() {
           </h3>
         </div>
 
-        {/* Multi-Checkbox Container Card */}
-        <div className="bg-[#111c38] border border-slate-700/80 rounded-2xl p-5 sm:p-6 backdrop-blur-sm shadow-md">
-          <Controller
-            name="productCategories"
-            control={control}
-            render={({ field }) => (
-              <MultiCheckbox
-                label="Select Machinery & Product Categories You Offer"
-                name="productCategories"
-                error={errors.productCategories as FieldError | undefined}
-                required
-                options={CATEGORY_OPTIONS}
-                value={field.value}
-                onChange={field.onChange}
-              />
-            )}
-          />
-        </div>
+      {/* Multi-Checkbox Container Card */}
+<div className="bg-[#111c38] border border-slate-700/80 rounded-2xl p-5 sm:p-6 backdrop-blur-sm shadow-md">
+  <Controller
+    name="productCategories"
+    control={control}
+    render={({ field }) => (
+      <MultiCheckbox
+        label="Select Machinery & Product Categories You Offer"
+        name="productCategories"
+        error={errors.productCategories as FieldError | undefined}
+        options={CATEGORY_OPTIONS}
+        value={field.value || []}
+        onChange={field.onChange}
+      />
+    )}
+  />
+</div>
 
         <FormField label="Stall Type Preference" name="stallPreference" error={errors.stallPreference} required>
           <Select
