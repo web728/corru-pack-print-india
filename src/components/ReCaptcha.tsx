@@ -25,6 +25,7 @@ import {
 declare global {
   interface Window {
     grecaptcha?: {
+      ready: (callback: () => void) => void;
       render: (
         container: HTMLElement | string,
         params: RecaptchaRenderParams,
