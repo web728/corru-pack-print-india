@@ -23,7 +23,7 @@ export const POST = createFormHandler<ConferenceFormData>({
     d.email,
     d.phone ?? "",
     d.company ?? "",
-    d.interest,
+    d.interest ?? "", // <-- Yahan ?? "" add kar diya
     d.message ?? "",
     new Date().toISOString(),
   ],
@@ -32,11 +32,11 @@ export const POST = createFormHandler<ConferenceFormData>({
     Email: d.email,
     Phone: d.phone ?? "—",
     Company: d.company ?? "—",
-    Interest: d.interest,
+    Interest: d.interest ?? "—", // <-- Safe fallback
     Message: d.message ?? "—",
   }),
   buildConfirmationDetails: (d) => ({
     Name: d.fullName,
-    Interest: d.interest,
+    Interest: d.interest ?? "—", // <-- Safe fallback
   }),
 });

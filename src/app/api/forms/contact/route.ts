@@ -22,22 +22,22 @@ export const POST = createFormHandler<ContactFormData>({
     d.fullName,
     d.email,
     d.phone ?? "",
-    d.enquiryType,
-    d.subject,
-    d.message,
+    d.enquiryType ?? "", // <-- Fixed: undefined safe
+    d.subject ?? "",     // <-- Fixed: undefined safe
+    d.message ?? "",     // <-- Fixed: undefined safe
     new Date().toISOString(),
   ],
   buildAdminFields: (d) => ({
     Name: d.fullName,
     Email: d.email,
     Phone: d.phone ?? "—",
-    "Enquiry Type": d.enquiryType,
-    Subject: d.subject,
-    Message: d.message,
+    "Enquiry Type": d.enquiryType ?? "—", // <-- Fixed
+    Subject: d.subject ?? "—",             // <-- Fixed
+    Message: d.message ?? "—",             // <-- Fixed
   }),
   buildConfirmationDetails: (d) => ({
     Name: d.fullName,
-    "Enquiry Type": d.enquiryType,
-    Subject: d.subject,
+    "Enquiry Type": d.enquiryType ?? "—", // <-- Fixed
+    Subject: d.subject ?? "—",             // <-- Fixed
   }),
 });

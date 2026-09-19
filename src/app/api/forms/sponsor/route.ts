@@ -22,8 +22,8 @@ export const POST = createFormHandler<SponsorFormData>({
     d.companyName,
     d.contactPerson,
     d.email,
-    d.phone,
-    d.interestArea,
+    d.phone ?? "",         // <-- Fixed: undefined safe
+    d.interestArea ?? "",  // <-- Fixed: undefined safe
     d.message ?? "",
     new Date().toISOString(),
   ],
@@ -31,13 +31,13 @@ export const POST = createFormHandler<SponsorFormData>({
     Company: d.companyName,
     Contact: d.contactPerson,
     Email: d.email,
-    Phone: d.phone,
-    "Interest Area": d.interestArea,
+    Phone: d.phone ?? "—",              // <-- Fixed
+    "Interest Area": d.interestArea ?? "—", // <-- Fixed
     Message: d.message ?? "—",
   }),
   buildConfirmationDetails: (d) => ({
     Company: d.companyName,
     Contact: d.contactPerson,
-    "Interest Area": d.interestArea,
+    "Interest Area": d.interestArea ?? "—", // <-- Fixed
   }),
 });
