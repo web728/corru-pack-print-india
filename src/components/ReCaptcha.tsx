@@ -62,38 +62,41 @@ interface ReCaptchaProps {
 }
 
 const SCRIPT_ID = "recaptcha-v2-script";
+const CALLBACK_NAME = "__recaptchaOnLoadCallback";
 let scriptLoadingPromise: Promise<void> | null = null;
 
 function loadRecaptchaScript(): Promise<void> {
   if (typeof window === "undefined") return Promise.resolve();
-  if (window.grecaptcha) return Promise.resolve();
+  if (window.grecaptcha?.render) return Promise.resolve();
   if (scriptLoadingPromise) return scriptLoadingPromise;
 
   scriptLoadingPromise = new Promise((resolve, reject) => {
     if (document.getElementById(SCRIPT_ID)) {
+      // Script kisi doosre form instance ne pehle hi inject kar diya hai on this
+      // page — bas wait karo jab tak render() available na ho jaye.
       const check = setInterval(() => {
-        if (window.grecaptcha) {
+        if (window.grecaptcha?.render) {
           clearInterval(check);
           resolve();
         }
-      }, 100);
+      }, 50);
       return;
     }
 
+    // Google ka officially recommended tarika: `onload=<globalFnName>` query param.
+    // Ye callback TABHI fire hota hai jab poora grecaptcha API (render, reset,
+    // getResponse sab) fully initialize ho chuka ho — `window.grecaptcha` ke
+    // truthy hone ka polling ya `.ready()` se bhi zyada reliable, kyunki isme
+    // koi bhi race condition possible nahi hai (Google khud isko call karta hai).
+    (window as unknown as Record<string, () => void>)[CALLBACK_NAME] = () => {
+      resolve();
+    };
+
     const script = document.createElement("script");
     script.id = SCRIPT_ID;
-    // render=explicit: hum khud .render() call karenge (React lifecycle ke saath safe)
-    script.src = "https://www.google.com/recaptcha/api.js?render=explicit";
+    script.src = `https://www.google.com/recaptcha/api.js?onload=${CALLBACK_NAME}&render=explicit`;
     script.async = true;
     script.defer = true;
-    script.onload = () => {
-      const waitReady = setInterval(() => {
-        if (window.grecaptcha) {
-          clearInterval(waitReady);
-          resolve();
-        }
-      }, 50);
-    };
     script.onerror = () => reject(new Error("Failed to load reCAPTCHA script"));
     document.head.appendChild(script);
   });
@@ -120,7 +123,7 @@ const ReCaptcha = forwardRef<ReCaptchaRef, ReCaptchaProps>(
     }, []);
 
     useEffect(() => {
-      if (!scriptLoaded || !containerRef.current || !window.grecaptcha) return;
+      if (!scriptLoaded || !containerRef.current || !window.grecaptcha?.render) return;
       if (widgetIdRef.current !== null) return; // already rendered, avoid double-render in StrictMode
 
       widgetIdRef.current = window.grecaptcha.render(containerRef.current, {
