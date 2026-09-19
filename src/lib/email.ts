@@ -40,6 +40,15 @@ export interface AdminNotificationData {
 }
 
 // ---------------------------------------------------------------------------
+// Site / brand name shown at the START of every email subject.
+// Mobile push notifications truncate long subjects, so this must come
+// first — it's what you actually see in the notification banner.
+// Pulled from EVENT.name ("Corru Pack Print India") so it stays in sync
+// with the rest of the site automatically.
+// ---------------------------------------------------------------------------
+const SITE_NAME = EVENT.name;
+
+// ---------------------------------------------------------------------------
 // Internals (SMTP Transporter setup with App Password)
 // ---------------------------------------------------------------------------
 
@@ -162,6 +171,7 @@ function adminHtml(data: AdminNotificationData): string {
 <head><meta charset="utf-8"></head>
 <body style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;">
   <h2>New ${formTypeLabel(data.formType)}</h2>
+  <p><strong>Website:</strong> ${SITE_NAME}</p>
   <p><strong>Reference:</strong> ${data.referenceNumber}</p>
   <p><strong>Name:</strong> ${data.submitterName}</p>
   <p><strong>Email:</strong> ${data.submitterEmail}</p>
@@ -177,6 +187,7 @@ function adminText(data: AdminNotificationData): string {
 
   return [
     `New ${formTypeLabel(data.formType)}`,
+    `Website: ${SITE_NAME}`,
     `Reference: ${data.referenceNumber}`,
     `Name: ${data.submitterName}`,
     `Email: ${data.submitterEmail}`,
@@ -214,7 +225,10 @@ export async function sendConfirmationEmail(
   }
 
   const config = getConfig();
-  const subject = `${templateData.referenceNumber} — ${formTypeLabel(templateData.formType)} Confirmation | ${EVENT.name}`;
+
+  // Site name + form type first (visible in mobile notification preview),
+  // reference number at the end for when they open the full email.
+  const subject = `${SITE_NAME} — ${formTypeLabel(templateData.formType)} Confirmed (${templateData.referenceNumber})`;
 
   try {
     const info = await transporter.sendMail({
@@ -257,7 +271,9 @@ export async function sendAdminNotification(
     return { success: false, status: "disabled", errorMessage: "No admin recipients configured" };
   }
 
-  const subject = `[${submissionData.referenceNumber}] New ${formTypeLabel(formType)} | ${EVENT.name}`;
+  // Site name + form type + submitter name first — this is what shows up
+  // in a phone's notification banner before it gets cut off.
+  const subject = `${SITE_NAME}: New ${formTypeLabel(formType)} — ${submissionData.submitterName} (${submissionData.referenceNumber})`;
 
   try {
     const info = await transporter.sendMail({

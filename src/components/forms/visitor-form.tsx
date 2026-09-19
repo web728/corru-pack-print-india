@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { useForm, Controller, type FieldError } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { visitorSchema, type VisitorFormData } from "@/schemas";
@@ -15,6 +16,7 @@ import {
   FormStatus,
   FormErrorSummary,
 } from "@/components/ui/form-field";
+import ReCaptcha, { type ReCaptchaRef } from "@/components/ReCaptcha"; // <-- naya import, apne actual path se adjust karo
 import Link from "next/link";
 import { User, Building2, MapPin, Compass } from "lucide-react";
 
@@ -46,6 +48,27 @@ export function VisitorForm() {
     endpoint: "/api/forms/visitor",
   });
 
+  // --- reCAPTCHA state ---
+  const recaptchaRef = useRef<ReCaptchaRef>(null);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [recaptchaError, setRecaptchaError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (result) {
+      recaptchaRef.current?.reset();
+      setRecaptchaToken(null);
+    }
+  }, [result]);
+
+  const onSubmit = (data: VisitorFormData) => {
+    if (!recaptchaToken) {
+      setRecaptchaError("Please verify you're not a robot.");
+      return;
+    }
+    setRecaptchaError(null);
+    submit({ ...data, recaptchaToken });
+  };
+
   if (result?.success) {
     return (
       <div className="bg-[#111c38] border border-green-500/40 rounded-2xl p-8 backdrop-blur-md text-center shadow-2xl animate-in fade-in zoom-in-95 duration-300">
@@ -60,11 +83,7 @@ export function VisitorForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit((data) => submit(data))}
-      noValidate
-      className="space-y-10"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-10">
       <FormErrorSummary errors={errors} />
 
       {result?.error && (
@@ -261,6 +280,19 @@ export function VisitorForm() {
               />
             )}
           />
+        </div>
+
+        {/* reCAPTCHA v2 widget */}
+        <div>
+          <ReCaptcha
+            ref={recaptchaRef}
+            siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+            onVerify={setRecaptchaToken}
+            onExpire={() => setRecaptchaToken(null)}
+          />
+          {recaptchaError && (
+            <p className="text-red-500 text-xs mt-2">{recaptchaError}</p>
+          )}
         </div>
 
         <div className="pt-2">
