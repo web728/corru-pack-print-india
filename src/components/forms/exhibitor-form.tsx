@@ -71,7 +71,7 @@ export function ExhibitorForm() {
       return;
     }
     setRecaptchaError(null);
-    submit({ ...data, recaptchaToken });
+    submit({ ...data, botToken: recaptchaToken });
   };
 
   if (result?.success) {
@@ -169,7 +169,7 @@ export function ExhibitorForm() {
             </div>
           </FormField>
 
-          <FormField label="Company Website" name="website" error={errors.website} >
+          <FormField label="Company Website" name="website" error={errors.website} hint="Optional">
             <div className="relative">
               <Input
                 id="website"
@@ -236,23 +236,24 @@ export function ExhibitorForm() {
           </h3>
         </div>
 
-      {/* Multi-Checkbox Container Card */}
-<div className="bg-[#111c38] border border-slate-700/80 rounded-2xl p-5 sm:p-6 backdrop-blur-sm shadow-md">
-  <Controller
+        {/* Multi-Checkbox Container Card */}
+        <div className="bg-[#111c38] border border-slate-700/80 rounded-2xl p-5 sm:p-6 backdrop-blur-sm shadow-md">
+          <Controller
+            name="productCategories"
+            control={control}
+          render={({ field }) => (
+  <MultiCheckbox
+    label="Select Machinery & Product Categories You Offer"
     name="productCategories"
-    control={control}
-    render={({ field }) => (
-      <MultiCheckbox
-        label="Select Machinery & Product Categories You Offer"
-        name="productCategories"
-        error={errors.productCategories as FieldError | undefined}
-        options={CATEGORY_OPTIONS}
-        value={field.value || []}
-        onChange={field.onChange}
-      />
-    )}
+    error={errors.productCategories as FieldError | undefined}
+    required
+    options={CATEGORY_OPTIONS}
+    value={field.value ?? []}
+    onChange={field.onChange}
   />
-</div>
+)}
+          />
+        </div>
 
         <FormField label="Stall Type Preference" name="stallPreference" error={errors.stallPreference} required>
           <Select
@@ -266,7 +267,7 @@ export function ExhibitorForm() {
           />
         </FormField>
 
-        <FormField label="Additional Requirements / Specific Requests" name="message" error={errors.message} >
+        <FormField label="Additional Requirements / Specific Requests" name="message" error={errors.message} hint="Optional">
           <Textarea
             id="message"
             {...register("message")}

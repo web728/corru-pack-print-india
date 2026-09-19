@@ -61,7 +61,7 @@ export function ContactForm() {
       return;
     }
     setRecaptchaError(null);
-    submit({ ...data, recaptchaToken });
+    submit({ ...data, botToken: recaptchaToken });
   };
 
   if (result?.success) {

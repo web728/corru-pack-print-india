@@ -66,7 +66,7 @@ export function VisitorForm() {
       return;
     }
     setRecaptchaError(null);
-    submit({ ...data, recaptchaToken });
+    submit({ ...data, botToken: recaptchaToken });
   };
 
   if (result?.success) {
@@ -234,19 +234,20 @@ export function VisitorForm() {
 
         <div className="bg-[#111c38] border border-slate-700/80 rounded-2xl p-5 sm:p-6 backdrop-blur-sm shadow-md">
           <Controller
-  name="productInterests"
-  control={control}
-  render={({ field }) => (
-    <MultiCheckbox
-      label="Product Categories of Interest"
-      name="productInterests"
-      error={errors.productInterests as FieldError | undefined}
-      options={CATEGORY_OPTIONS}
-      value={field.value || []}  
-      onChange={field.onChange}
-    />
-  )}
-/>
+            name="productInterests"
+            control={control}
+          render={({ field }) => (
+  <MultiCheckbox
+    label="Product Categories of Interest"
+    name="productInterests"
+    error={errors.productInterests as FieldError | undefined}
+    required
+    options={CATEGORY_OPTIONS}
+    value={field.value ?? []}
+    onChange={field.onChange}
+  />
+)}
+          />
         </div>
       </div>
 
