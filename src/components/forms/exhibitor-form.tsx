@@ -80,8 +80,7 @@ export function ExhibitorForm() {
         <FormStatus
           type="success"
           title="Enquiry Received Successfully!"
-          message="Thank you for registering your interest. Our official sales secretariat will review your requirements and reach out with the floor plan & custom pricing options."
-          referenceNumber={result.referenceNumber}
+          message="Thank you for registering your interest. Our official Team will review your requirements and reach out with the floor plan & custom pricing options."
         />
       </div>
     );
