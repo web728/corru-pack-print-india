@@ -7,7 +7,7 @@
  *  3. Zod validate
  *  4. Normalize / sanitize
  *  5. Generate reference number
- *  6. Duplicate check (email + formType + edition)
+ *  6. Duplicate check (DISABLED - Multiple submissions allowed)
  *  7. Save to MongoDB
  *  8. Create integration jobs for sheets / email
  *  9. Attempt immediate Google Sheets sync
@@ -174,9 +174,11 @@ export async function processFormSubmission<T extends Record<string, unknown>>(
   const referenceNumber = await generateReference(formType, collectionName);
 
   // -----------------------------------------------------------------------
-  // 6. Duplicate check (email + formType + edition)
+  // 6. Duplicate check (DISABLED - Allows multiple submissions per email)
   // -----------------------------------------------------------------------
   const submitterEmail = String(sanitized[emailField] ?? "");
+  
+  /* Duplicate check removed to allow unlimited submissions per email address.
   if (submitterEmail) {
     const col = await getCollection(collectionName);
     const duplicate = await col.findOne(
@@ -197,6 +199,7 @@ export async function processFormSubmission<T extends Record<string, unknown>>(
       };
     }
   }
+  */
 
   // -----------------------------------------------------------------------
   // 7. Save to MongoDB
